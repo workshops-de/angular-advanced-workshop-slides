@@ -1,0 +1,9 @@
+name: Mono Repositories
+position: 9
+trainer: 'gregor@entwicklungszeit.dev'
+slides_type: google_slides
+github_code_url: https://github.com/workshops-de/angular-workshop
+pdf_generation_enabled: true
+stackblitz_enabled: false
+codesandbox_enabled: false
+deprecated: false
