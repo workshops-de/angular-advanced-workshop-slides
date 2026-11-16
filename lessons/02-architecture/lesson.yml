@@ -1,0 +1,11 @@
+name: Angular - Architecture
+position: 2
+trainer: "gregor@entwicklungszeit.dev"
+slides_type: slidev
+github_code_url: https://github.com/workshops-de/angular-advanced-workshop
+git_tag_starting: main
+slides_url: https://workshops-de.github.io/angular-modul-2-slides/02-architecture
+pdf_generation_enabled: true
+stackblitz_enabled: false
+codesandbox_enabled: false
+deprecated: false
