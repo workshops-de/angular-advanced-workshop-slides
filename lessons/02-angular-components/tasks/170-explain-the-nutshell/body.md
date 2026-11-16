@@ -1,4 +1,0 @@
-- Everyone pick a topic to explain
-	- Only one person per topic
-- Prepare 3min
-- Explain it in less than 1 minute

@@ -1,3 +1,0 @@
-- **Bind the click event** Open _src/app/books/book-card/book-card.html_, bind to the event `click{:ts}` of the `<a>{:html}`-Tag (aka. Detailslink), and assign the method `handleDetailClick($event){:ts}` to the Event-Binding.
-- **Implement the handler** Switch to the component class and implement the new method `handleDetailClick(click: MouseEvent){:ts}`. Log the value of the parameter `handleDetailClick{:ts}` to the console and prevent the page from reloading by preventing the default behaviour of the link's click event _(see hint)_.
-- **Verify** Ensure your implementation works by checking your app at [localhost:4200](http://localhost:4200). Open the browser's console to see the log messages.

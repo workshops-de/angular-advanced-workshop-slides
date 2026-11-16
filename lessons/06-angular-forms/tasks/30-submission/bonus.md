@@ -1,1 +1,0 @@
-- Redirect after book creation to the newly created book's detail page (inject `Router{:ts}` and navigate with the ISBN returned from `create(){:ts}`).
