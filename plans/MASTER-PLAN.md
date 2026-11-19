@@ -34,11 +34,11 @@
 
 1. **Project Structure** ist Voraussetzung für Libraries: Die Feature-Ordner und `data/` werden später 1:1 zu Nx-Libraries, der Alias `@common-components` zum Library-Import.
 2. **Enforce Module Boundaries** nutzt heute `eslint-plugin-boundaries` auf Ordnerebene. Wird auf **Nx-Tags** (`@nx/enforce-module-boundaries`) umgebaut und kommt erst nach der Library-Extraktion.
-3. **Runtime Configuration** hat als letzten Schritt "Update ESLint boundaries". Dieser Schritt muss entkoppelt werden. Inhaltlich ist der Task Vorwissen für das Micro-Frontend (Manifest zur Laufzeit) und für CD (ein Build, mehrere Stages).
-4. **ADR** dokumentiert die Runtime-Configuration-Entscheidung und steht deshalb direkt dahinter. Ein ADR braucht eine echte Entscheidung davor.
+3. **Runtime Configuration** (jetzt Bonus in Lesson 02) hat als letzten Schritt "Update ESLint boundaries". Dieser Schritt muss entkoppelt werden. Inhaltlich ist der Task Vorwissen für das Micro-Frontend (Manifest zur Laufzeit) und für CD (ein Build, mehrere Stages).
+4. **ADR** steht jetzt **am Anfang** von Lesson 02 (E7) und dokumentiert die Strukturentscheidungen. Der ADR zur Runtime Configuration wird Teil des Bonus.
 5. **Store** kommt nach der Library-Extraktion und landet direkt in einer `data-access`-Library statt später verschoben zu werden.
 6. **Testing** kommt nach dem Store, damit es Komponenten, Services, Store und UI-Library zum Testen gibt. Die Tests laufen dann unter `nx test`.
-7. **Micro-Frontend** braucht Libraries, Boundaries und Runtime Configuration als Vorwissen.
+7. **Micro-Frontend** braucht Libraries und Boundaries als Vorwissen. Runtime Configuration ist nur Bonus, der Manifest-Gedanke muss deshalb im Micro-Frontend selbst eingeführt werden.
 
 ## 5. Leitidee: ein durchgehendes Projekt
 
@@ -49,7 +49,8 @@ Bookmonkey-App
   → Component Library (CDK, Aria, Storybook, Browser-Tests)
   → Store (data-access-Library)
   → Testing (Unit bis E2E)
-  → Runtime Configuration + ADR
+  → ADR (Entscheidungen festhalten, Start von Lesson 02)
+  → Runtime Configuration (Bonus)
   → Micro-Frontend (Native Federation)
   → CI/CD, Codeanalyse, Anti-Patterns
 ```
@@ -61,15 +62,15 @@ Jeder Schritt setzt den vorherigen voraus, ist aber über **Checkpoints** (Git-T
 | #   | Lesson                                | Tasks (**fett** = existiert schon, ggf. angepasst)                                                                                         | Min |
 | --- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --- |
 | 01  | Introduction                          | **Preparation**, **Choose your lessons and focus**                                                                                         | 25  |
-| 02  | Architecture: Structure & Mono-Repo   | **Project Structure** → (Folien: Mono vs. Multi Repo, Tool-Überblick) → Nx Migration → Libraries extrahieren → **Enforce Module Boundaries** (auf Nx umgebaut) → Affected und eigene Commands → Architekturtest (ArchUnitTS, abhängig vom Spike) → Bonus: Generator für ein Aggregat | 70  |
+| 02  | Architecture: Decisions, Structure & Mono-Repo | **ADR** (nach Folien zu Entscheidungen, Mono vs. Multi Repo) → **Project Structure** → Nx Migration (danach Folien Tool-Überblick) → Libraries extrahieren → **Enforce Module Boundaries** (auf Nx umgebaut) → Affected und eigene Commands → Architekturtest (ArchUnitTS, abhängig vom Spike) → Bonus: **Runtime Configuration** → Bonus: Generator für ein Aggregat | 95  |
 | 03  | Component Libraries                   | UI-Library → Angular CDK → Angular Aria + eigenes Styling → Storybook → Browser-Tests → Drittanbieter bewerten → Enterprise UX Patterns   | 110 |
 | 04  | State                                 | Zentral vs. dezentral (neu) → **Signal Store 1–8**                                                                                         | 110 |
 | 05  | Testing                               | **Vitest 1–5** → Testpyramide und Testbarkeit → Architekturtests (ArchUnitTS) → E2E (Playwright)                                                                           | 135 |
-| 06  | Architecture: Configuration & Decisions | **Runtime Configuration** (entkoppelt) → **ADR**                                                                                         | 20  |
+| 06  | *entfallen*, aufgegangen in Lesson 02 (E7)                                                                                                | 0   |
 | 07  | Micro-Frontend                        | Monolith vs. Modulith vs. Micro-Frontend → Remote anbinden → Shared Dependencies                                                           | 45  |
 | 08  | Delivery & Governance                 | CI mit `nx affected` → Codeanalyse → CD → Anti-Patterns finden                                                                             | 50  |
 
-**Summe ca. 570 min, also etwa 9,5 h reine Aufgabenzeit bei 15 h Workshop.** Das lässt Reserve für Folien, Diskussion, Pausen und Hänger.
+**Summe ca. 550 min (Architekturtest in 02, Lesson 05 verkürzt um 20) bzw. 555 min (Architekturtest bleibt in 05), also etwa 9 bis 9,5 h reine Aufgabenzeit bei 15 h Workshop.** Lesson 02 ist mit 95 min die größte Lesson mit Aufgaben, die Folienzeit kommt dazu. Das lässt Reserve für Folien, Diskussion, Pausen und Hänger.
 
 ### Details zu neuen Tasks
 
@@ -148,6 +149,7 @@ Weitere Hebel:
 | E3  | Testing kommt **nach** dem Store.                                                                                                             | 2026-11-16 |
 | E4  | Micro-Frontend ist ein **eigener Lesson-Block**. Thematisch ist es Architektur, braucht aber Vorwissen und steht deshalb spät im Ablauf.      | 2026-11-16 |
 | E6  | `@nx/angular`, ArchUnitTS (`archunit`) und `valibot` sind im Workshop-Repo **vorinstalliert**. Kein Install in der Aufgabenzeit, Aufwärmen in der Preparation. | 2026-11-19 |
+| E7  | **ADR steht am Anfang von Lesson 02**, damit Architekturentscheidungen im Team abgesichert sind, bevor umgebaut wird. **Runtime Configuration ist Bonus** in Lesson 02. Lesson 06 entfällt. | 2026-11-19 |
 
 **E5 (2026-11-16):** Architekturtests gehören in die Testing-Lesson (05). Werkzeugkandidat ist ArchUnitTS. Welche Regeln wir lehren, klärt der [Detailplan 05](./05-testing.md).
 
@@ -201,7 +203,7 @@ Gelesen am 2026-11-16 (nx.dev, native-federation.com). Befehle sind aus den Docs
 
 | Heute                                  | Künftig                                                    | Hinweis                                                                |
 | -------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `02-architecture` (4 Tasks)            | aufgeteilt in 02 und 06                                    | Project Structure + Boundaries nach 02, Runtime Config + ADR nach 06   |
+| `02-architecture` (4 Tasks)            | bleibt Lesson 02                                           | ADR (nach vorn), Project Structure, Boundaries (umgebaut), Runtime Config (Bonus) |
 | `03-signal-store`                      | `04-…`                                                     | nur Position/Ordnername, Inhalte bleiben                               |
 | `07-angular-testing`                   | `05-…`                                                     | nur Position/Ordnername                                                |
 | `08-component-libraries` (Skelett)     | `03-…`                                                     | Skelett an Abschnitt 6 anpassen                                        |
@@ -218,7 +220,7 @@ Zusätzlich betroffen: Slides (die Architektur-Lesson hat Slidev-Folien und müs
 4. **Enterprise UX Patterns:** welche genau? (Vorschläge: Tabelle mit Filter/Sort/Paging, Dirty-Guard im Formular, Master-Detail, Loading-/Error-States, Toast-Feedback)
 5. **Tag-Länge:** stimmen ca. 3 h netto pro halbem Tag?
 6. **Tool-Überblick** (Nx, Bit, Rush, Turborepo): reine Folien oder auch Mini-Vergleich als Task?
-7. **Lesson 06** ist mit 20 min sehr klein. Mit Lesson 02 oder 07 zusammenlegen, oder bewusst eigenständig lassen?
+7. ~~Lesson 06 zu klein~~: entschieden (E7), aufgegangen in Lesson 02. Offen: Lesson-Nummern 07 und 08 umnummerieren?
 8. **Zentral vs. dezentral:** reicht ein kurzer Task, oder zählt das als Folienthema?
 
 ## 12. Nächste Schritte

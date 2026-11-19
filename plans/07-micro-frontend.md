@@ -10,7 +10,7 @@ Beworbene Inhalte: Micro-Front-End, Monolith vs. Modulith, Architektur-Trade-off
 
 ## Voraussetzungen
 
-Lessons 02 und 06: Nx-Workspace, Libraries, Boundaries, Runtime Configuration (Manifest-Idee).
+Lesson 02: Nx-Workspace, Libraries, Boundaries. Runtime Configuration (Manifest-Idee) ist dort nur Bonus, die Idee muss hier selbst kurz eingeführt werden.
 
 ## Tasks
 

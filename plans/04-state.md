@@ -31,7 +31,7 @@ Summe ca. 110 Minuten (bestehendes Material ca. 100, plus 10 für den neuen Task
 ## Arbeit an den bestehenden Tasks
 
 - **Mappen statt neu schreiben:** Die Tasks bleiben inhaltlich, Pfade und Projektbezug müssen auf die Nx-Struktur angepasst werden (Store liegt in `data-access`, nicht in `src/app/book`).
-- Prüfen, ob `BookApiClient` und `RuntimeConfiguration` im neuen Aufbau noch dort liegen, wo die Tasks sie erwarten. Runtime Configuration kommt erst in Lesson 06, der Store darf also nicht davon abhängen.
+- Prüfen, ob `BookApiClient` und `RuntimeConfiguration` im neuen Aufbau noch dort liegen, wo die Tasks sie erwarten. Runtime Configuration ist nur noch Bonus in Lesson 02 (Task 80), der Store darf also nicht davon abhängen.
 - Solution-Commits (`sample-solution`) müssen auf die neue Reihenfolge gerebased werden.
 
 ## Kürzungsoptionen

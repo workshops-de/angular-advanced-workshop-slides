@@ -10,7 +10,7 @@ Beworbene Inhalte: Codeanalyse, Continuous Integration, Continuous Deployment, a
 
 ## Voraussetzungen
 
-Lesson 02 (Affected und eigene Commands), Lesson 05 (Tests und Architekturtests), Lesson 06 (Runtime Configuration).
+Lesson 02 (Affected und eigene Commands, Runtime Configuration nur als Bonus, CD bleibt deshalb Skizze), Lesson 05 (Tests und Architekturtests).
 
 ## Tasks
 
