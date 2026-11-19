@@ -63,7 +63,7 @@ Jeder Schritt setzt den vorherigen voraus, ist aber über **Checkpoints** (Git-T
 | --- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --- |
 | 01  | Introduction                          | **Preparation**, **Choose your lessons and focus**                                                                                         | 25  |
 | 02  | Architecture: Decisions, Structure & Mono-Repo | **ADR** (nach Folien zu Entscheidungen, Mono vs. Multi Repo) → **Project Structure** → Nx Migration (danach Folien Tool-Überblick) → Libraries extrahieren → **Enforce Module Boundaries** (auf Nx umgebaut) → Affected und eigene Commands → Architekturtest (ArchUnitTS, abhängig vom Spike) → Bonus: **Runtime Configuration** → Bonus: Generator für ein Aggregat | 95  |
-| 03  | Component Libraries                   | UI-Library → Angular CDK → Angular Aria + eigenes Styling → Storybook → Browser-Tests → Drittanbieter bewerten → Enterprise UX Patterns   | 110 |
+| 03  | Component Libraries                   | Autocomplete (Material/CDK) → generische Entity-Auswahl → Einsatz → Storybook → Browser-Tests (Bonus: Aria, UX Patterns)   | 110 |
 | 04  | State                                 | Zentral vs. dezentral (neu) → **Signal Store 1–8**                                                                                         | 110 |
 | 05  | Testing                               | **Vitest 1–5** → Testpyramide und Testbarkeit → Architekturtests (ArchUnitTS) → E2E (Playwright)                                                                           | 135 |
 | 06  | *entfallen*, aufgegangen in Lesson 02 (E7)                                                                                                | 0   |
@@ -89,13 +89,15 @@ Jeder Schritt setzt den vorherigen voraus, ist aber über **Checkpoints** (Git-T
 
 | Task                             | Inhalt                                                                          | Min |
 | -------------------------------- | ------------------------------------------------------------------------------- | --- |
-| UI-Library                       | eigene Lib für Komponenten, Tag `type:ui`                                       | 10  |
-| Angular CDK                      | z. B. Overlay oder Dialog statt Eigenbau ("Wiederverwenden statt neu erfinden") | 20  |
-| Angular Aria + Styling           | headless Verhalten, eigenes Styling darüberlegen (Bonus-Kandidat)               | 20  |
+| Autocomplete mit Material/CDK    | Baustein aus Library-Komponenten statt Eigenbau ("Wiederverwenden statt neu erfinden") | 20  |
+| Generische Entity-Auswahl        | Abstraktion: eine Komponente für Buch und Autor, Suche und Anzeige als Input   | 20  |
+| Einsatz in Feature und Boundaries | `ui` ohne `data-access`, Daten kommen aus der Feature-Library                  | 15  |
 | Storybook                        | Setup per Generator, Story als Dokumentation                                    | 20  |
 | Browser-Tests                    | Tests gegen Stories oder im echten Browser                                      | 15  |
-| Drittanbieter bewerten           | Bewertungskriterien, kurze Evaluation                                           | 10  |
-| Enterprise UX Patterns           | Auswahl offen (siehe Fragen)                                                    | 15  |
+| Bonus: Angular Aria              | headless Variante der Auswahl mit eigenem Styling                               | 20  |
+| Bonus: Enterprise UX Patterns    | Auswahl offen                                                                   | 15  |
+
+Der Library-Vergleich (Spartan NG, PrimeNG, Material, DevExpress, Angular Aria) ist reiner Folieninhalt. Die Libraries `ui`, `data-access` und eine Feature-Library werden bereits in Lesson 02 leer angelegt (siehe Detailplan 03).
 
 **04 State:** nur ein neuer Task. Die bestehenden Signal-Store-Tasks werden auf die `data-access`-Library gemappt, nicht neu geschrieben. Kürzungspotenzial prüfen.
 
@@ -196,6 +198,10 @@ Gelesen am 2026-11-16 (nx.dev, native-federation.com). Befehle sind aus den Docs
 - [ ] **Nx + Native Federation zusammen:** In den Docs steht nichts zur Host/Remote-Verdrahtung in Nx-Workspaces. **Muss einmal komplett durchgespielt werden.**
 - [ ] **Library-Generatoren in Nx** (Angular): nicht gelesen.
 - [ ] **Storybook für Angular in Nx:** nicht gelesen.
+- [ ] **Library-Vergleich für Lesson 03** (Material, CDK, Angular Aria, PrimeNG, DevExpress, Spartan NG): Web-Recherche nötig, siehe Detailplan 03.
+- [ ] **Angular Aria:** Reifegrad und Umfang (Web-Recherche).
+- [ ] **Material/CDK Autocomplete und Formularanbindung** (Signal Forms vs. ControlValueAccessor): Web-Recherche.
+- [ ] **Browser-Tests gegen Stories** (Vitest Browser Mode oder Playwright in Nx): Web-Recherche.
 - [ ] **Native-Federation-Runtime-Seite:** Die Docs raten von `loadRemoteModule` als Top-Level-Funktion ab und empfehlen den Loader über DI. Entscheidung nötig, welchen Weg wir lehren.
 - [ ] Welche Angular-Version nutzt das Workshop-Repo? Davon hängt der Paketname (`-v4` oder nicht) ab.
 
