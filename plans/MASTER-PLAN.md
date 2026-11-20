@@ -63,7 +63,7 @@ Jeder Schritt setzt den vorherigen voraus, ist aber über **Checkpoints** (Git-T
 | --- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --- |
 | 01  | Introduction                          | **Preparation**, **Choose your lessons and focus**                                                                                         | 25  |
 | 02  | Architecture: Decisions, Structure & Mono-Repo | **ADR** (nach Folien zu Entscheidungen, Mono vs. Multi Repo) → **Project Structure** → Nx Migration (danach Folien Tool-Überblick) → Libraries extrahieren → **Enforce Module Boundaries** (auf Nx umgebaut) → Affected und eigene Commands → Architekturtest (ArchUnitTS, abhängig vom Spike) → Bonus: **Runtime Configuration** → Bonus: Generator für ein Aggregat | 95  |
-| 03  | Component Libraries                   | Autocomplete (Material/CDK) → generische Entity-Auswahl → Einsatz → Storybook → Browser-Tests (Bonus: Aria, UX Patterns)   | 110 |
+| 03  | Component Libraries                   | Autocomplete (Material/CDK) → generische Entity-Auswahl → Host-Directive → Einsatz → Storybook → Browser-Tests (Bonus: Aria, Routed Dialog)   | 110 |
 | 04  | State                                 | Zentral vs. dezentral (neu) → **Signal Store 1–8**                                                                                         | 110 |
 | 05  | Testing                               | **Vitest 1–5** → Testpyramide und Testbarkeit → Architekturtests (ArchUnitTS) → E2E (Playwright)                                                                           | 135 |
 | 06  | *entfallen*, aufgegangen in Lesson 02 (E7)                                                                                                | 0   |
@@ -91,11 +91,12 @@ Jeder Schritt setzt den vorherigen voraus, ist aber über **Checkpoints** (Git-T
 | -------------------------------- | ------------------------------------------------------------------------------- | --- |
 | Autocomplete mit Material/CDK    | Baustein aus Library-Komponenten statt Eigenbau ("Wiederverwenden statt neu erfinden") | 20  |
 | Generische Entity-Auswahl        | Abstraktion: eine Komponente für Buch und Autor, Suche und Anzeige als Input   | 20  |
+| Host-Directive                   | Verhalten in Direktiven auslagern, per `hostDirectives` komponieren             | 15  |
 | Einsatz in Feature und Boundaries | `ui` ohne `data-access`, Daten kommen aus der Feature-Library                  | 15  |
 | Storybook                        | Setup per Generator, Story als Dokumentation                                    | 20  |
 | Browser-Tests                    | Tests gegen Stories oder im echten Browser                                      | 15  |
 | Bonus: Angular Aria              | headless Variante der Auswahl mit eigenem Styling                               | 20  |
-| Bonus: Enterprise UX Patterns    | Auswahl offen                                                                   | 15  |
+| Bonus: Routed Dialog             | Dialog über eigenen Router-Outlet; Musterlösung zeigt Umsetzung. Entity-Auswahl-Ausblick (Dialog, Anlegen) nur Folien | 20  |
 
 Der Library-Vergleich (Spartan NG, PrimeNG, Material, DevExpress, Angular Aria) ist reiner Folieninhalt. Die Libraries `ui`, `data-access` und eine Feature-Library werden bereits in Lesson 02 leer angelegt (siehe Detailplan 03).
 
@@ -152,6 +153,9 @@ Weitere Hebel:
 | E4  | Micro-Frontend ist ein **eigener Lesson-Block**. Thematisch ist es Architektur, braucht aber Vorwissen und steht deshalb spät im Ablauf.      | 2026-11-16 |
 | E6  | `@nx/angular`, ArchUnitTS (`archunit`) und `valibot` sind im Workshop-Repo **vorinstalliert**. Kein Install in der Aufgabenzeit, Aufwärmen in der Preparation. | 2026-11-19 |
 | E7  | **ADR steht am Anfang von Lesson 02**, damit Architekturentscheidungen im Team abgesichert sind, bevor umgebaut wird. **Runtime Configuration ist Bonus** in Lesson 02. Lesson 06 entfällt. | 2026-11-19 |
+| E8  | Formularanbindung der generischen UI-Komponente (Lesson 03) per **Signal Forms**, nicht ControlValueAccessor. | 2026-11-20 |
+| E9  | `@angular/material` und `@angular/aria` (plus Storybook-/Browser-Test-Pakete nach Recherche) werden im Workshop-Repo **vorinstalliert**. | 2026-11-20 |
+| E10 | Die Libraries `ui`, `data-access` und eine Feature-Library werden in Lesson 02 **leer angelegt**. Lesson 03 füllt `ui`. | 2026-11-20 |
 
 **E5 (2026-11-16):** Architekturtests gehören in die Testing-Lesson (05). Werkzeugkandidat ist ArchUnitTS. Welche Regeln wir lehren, klärt der [Detailplan 05](./05-testing.md).
 
@@ -200,7 +204,7 @@ Gelesen am 2026-11-16 (nx.dev, native-federation.com). Befehle sind aus den Docs
 - [ ] **Storybook für Angular in Nx:** nicht gelesen.
 - [ ] **Library-Vergleich für Lesson 03** (Material, CDK, Angular Aria, PrimeNG, DevExpress, Spartan NG): Web-Recherche nötig, siehe Detailplan 03.
 - [ ] **Angular Aria:** Reifegrad und Umfang (Web-Recherche).
-- [ ] **Material/CDK Autocomplete und Formularanbindung** (Signal Forms vs. ControlValueAccessor): Web-Recherche.
+- [ ] **Material/CDK Autocomplete, Signal-Forms-Custom-Control und `hostDirectives`:** Web-Recherche.
 - [ ] **Browser-Tests gegen Stories** (Vitest Browser Mode oder Playwright in Nx): Web-Recherche.
 - [ ] **Native-Federation-Runtime-Seite:** Die Docs raten von `loadRemoteModule` als Top-Level-Funktion ab und empfehlen den Loader über DI. Entscheidung nötig, welchen Weg wir lehren.
 - [ ] Welche Angular-Version nutzt das Workshop-Repo? Davon hängt der Paketname (`-v4` oder nicht) ab.
@@ -223,7 +227,7 @@ Zusätzlich betroffen: Slides (die Architektur-Lesson hat Slidev-Folien und müs
 1. **Angular-Version** des Workshop-Repos?
 2. **Wo liegen die Checkpoints?** Weiter im `sample-solution`-Submodul oder zusätzlich eigene Tags?
 3. **Micro-Frontend-Remote:** als Ordner im Repo oder aus der Hilfsbibliothek?
-4. **Enterprise UX Patterns:** welche genau? (Vorschläge: Tabelle mit Filter/Sort/Paging, Dirty-Guard im Formular, Master-Detail, Loading-/Error-States, Toast-Feedback)
+4. **Enterprise UX Patterns:** entschieden. Nur Folienausblick (Entity-Auswahl mit Dialog und Anlegen), Routed Dialog als Bonus-Task (siehe Detailplan 03).
 5. **Tag-Länge:** stimmen ca. 3 h netto pro halbem Tag?
 6. **Tool-Überblick** (Nx, Bit, Rush, Turborepo): reine Folien oder auch Mini-Vergleich als Task?
 7. ~~Lesson 06 zu klein~~: entschieden (E7), aufgegangen in Lesson 02. Offen: Lesson-Nummern 07 und 08 umnummerieren?
