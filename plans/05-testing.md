@@ -61,7 +61,8 @@ Diese Inhalte bekommen **keine Aufgabe**, sie begründen den Wechsel zu Vitest u
 | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
 | Vieles muss explizit gemacht werden              | `configureTestingModule`, Fixture, Inputs per `componentRef.setInput`, Provider, alles von Hand           |
 | `detectChanges()` muss man selbst aufrufen       | Wer es vergisst, sieht kein oder ein veraltetes DOM. Fehlerbild ist schwer zu erkennen.                    |
-| `whenStable()` hat Grenzen                       | Wartet nur auf Angulars eigene Stabilität. Timer, nicht verfolgte Async-Arbeit oder Dinge außerhalb der Zone/des Schedulers werden nicht erfasst. **Recherche nötig, siehe offene Fragen.** |
+| `whenStable()` hat Grenzen                       | Löst auf, wenn die Fixture stabil ist, also keine von Angular verfolgten Async-Tasks mehr laufen. Alles andere (z. B. Fake-Timer, externe Async-Arbeit) ist nicht erfasst. **Genaue Grenzen noch nicht belegt, Video-Quelle abwarten.** |
+| Zone vs. Zoneless ändert die Regeln              | Auto-Detect ist laut Angular-Doku bei Zoneless standardmäßig an, bei Zone-basierten Tests aus. Die Zoneless-Doku empfiehlt `await fixture.whenStable()` statt `detectChanges()`. Einmal aktiviertes Auto-Detect lässt sich bei Zoneless nicht mehr abschalten (laut Commit, nicht gegen Release geprüft). Quellen: [Utility APIs](https://angular.dev/guide/testing/utility-apis), [Zoneless](https://v20.angular.dev/guide/zoneless). |
 | DOM-Zugriff ist wenig ergonomisch                | `querySelector` und `textContent` koppeln den Test an die Markup-Struktur, nicht an das Nutzerverhalten    |
 | Asynchrone Zustände                              | Warten, Polling und Retry muss man selbst bauen                                                           |
 
@@ -73,15 +74,26 @@ Der Test aus Task 10 wird mit Vitest-Mitteln neu geschrieben.
 
 - `expect.poll(() => ...)` ersetzt manuelles Warten und `detectChanges`-Rituale, wo es passt.
 - `expect.element(locator)` für Assertions auf Elemente, mit automatischem Retry.
-- "Partieller Browser Mode" (Begriff aus dem Entwurf): nur die Browser-Mode-Assertions und Locators nutzen, ohne gleich alles im Browser zu laufen. **Begriff und technische Machbarkeit klären (Spike).**
+- "Partieller Browser Mode" (Begriff aus dem Entwurf): **Recherche (2026-11-20) spricht dagegen, dass `expect.element` und `page.getBy*` ohne Browser Mode laufen.** Beide gehören zu `vitest/browser` und brauchen die Browser-Runtime. `expect.poll` ist dagegen Vitest-Kern und läuft auch gegen jsdom. Konsequenz: Task 20 nutzt `expect.poll` (jsdom), `expect.element` wandert in Task 30. Die Vitest-Doku kennt keinen partiellen Modus, nur getrennte `projects` (siehe Task 30). Mit Gregor klären, was "partiell" meint.
 - Vorher/Nachher-Vergleich: Wie viel Code fällt weg, was wird lesbarer?
 
-Offen: Funktionieren `expect.element` und Locators im aktuellen Angular-Vitest-Setup (Builder `@angular/build:unit-test`) auch ohne Browser Mode?
+- Konfiguration laut [Vitest `expect`-Config](https://vitest.dev/config/expect#expect-poll): `expect.poll.interval` (Standard 50 ms) und `expect.poll.timeout` (Standard 1000 ms). Dieselben Optionen lassen sich pro Aufruf mit `expect.poll(condition, options)` überschreiben. Die Seite `browser.expect` wurde nicht gelesen.
+- `expect.poll` laut [Vitest API](https://vitest.dev/api/expect#poll) (Seite war gekürzt, der Poll-Abschnitt lag im gelesenen Teil): `expect.poll(() => wert, { interval, timeout, message })` wiederholt die Assertion bis sie passt. Der Callback bekommt ein `AbortSignal`. Wirft er, wird bis zum Timeout wiederholt. **Immer `await`**, sonst schlägt der Test seit Vitest 3 mit Warnung fehl. Nicht unterstützt: Snapshot-Matcher, `.resolves`/`.rejects`, `toThrow`. Mit `vi.useFakeTimers` ruft Vitest nach jedem Fehlversuch `vi.advanceTimersByTime(interval)` auf (Anknüpfung für die Folie zu `whenStable` und Timern).
+- **Einordnung (Gregor, 2026-11-20):** `expect.poll` steht in der allgemeinen `expect`-API und der allgemeinen Config, nicht in der Browser-Mode-Doku. Es ist also Vitest-Kern und hat nichts mit dem Browser Mode zu tun. Es läuft deshalb auch gegen jsdom. Das ist aus der Doku-Struktur gelesen, nicht ausprobiert (Spike später).
+Offen: Läuft `expect.poll` im Angular-Builder (`@angular/build:unit-test`) wie dokumentiert? Quellen: [Vitest wait-for](https://main.vitest.dev/guide/recipes/wait-for), [Vitest Assertion API](https://vitest.dev/guide/browser/assertion-api).
 
 ## Task 30: Vitest Browser Mode (neu)
 
 - Derselbe Test läuft im echten Browser (Playwright-Provider).
 - Fragen: Was ändert sich bei der Konfiguration? Was ist gleich geblieben? Welche Fehler findet nur der Browser (Layout, echte Events)?
+- Konfiguration laut [Vitest-Doku](https://vitest.dev/guide/browser/) (Seite zu v5.1.1 gelesen): `test.browser.enabled: true`, `provider: playwright()` (empfohlen, Paket `@vitest/browser-playwright`), `instances: [{ browser: 'chromium' }]`, `headless`. Ein Provider ist Pflicht. Für Angular gibt es kein offizielles Plugin, die Doku verlinkt `vitest-browser-angular`.
+- **Warum Browser Mode (Folienargument)**, laut [Vitest "Why Browser Mode"](https://vitest.dev/guide/browser/why): jsdom und happy-dom simulieren den Browser nur, dadurch sind falsch positive und falsch negative Ergebnisse möglich. Nachteile: längere Initialisierung (Provider und Browser starten) und kein Ersatz für E2E-Runner. Die Doku empfiehlt, Browser Mode um einen eigenen Runner wie Playwright zu ergänzen. Das passt zu Task 100.
+- **Gemischter Betrieb:** Die Doku beschreibt keinen partiellen Modus. Am nächsten kommt die Option `projects`: Node-Tests und Browser-Tests laufen als getrennte Projekte, aufgeteilt per Glob. Für den Workshop denkbar: Task 20 im Node-Projekt, Task 30 im Browser-Projekt.
+- Bekannte Einschränkungen: `alert`/`confirm` blockieren (Vitest mockt sie), `vi.spyOn` auf Modul-Exports wirft (Workaround `vi.mock(pfad, { spy: true })`).
+- `expect.element` laut [Browser-Assertions](https://vitest.dev/api/browser/assertions) (Seite gekürzt, Matcher-Liste am Ende nur zusammengefasst): "Like expect.poll, expect.element retries DOM assertions until they pass or the timeout is reached." Locators werden vor der Assertion per `locator.findElement()` aufgelöst. Empfehlung der Doku: bei `page.getBy*` immer `expect.element` nutzen. Ein einfaches `expect(locator).toX()` wiederholt **nicht**. `timeout` und `interval` übernehmen die Werte aus `expect.poll.timeout` und `expect.poll.interval`. Die Matcher stammen aus `@testing-library/jest-dom`, erweitert um Locators und Retry. Nützlich für die Aufgabe: `toBeVisible`, `toBeEnabled`, `toBeInTheDocument`, `toHaveTextContent`, `toHaveValue`, `toHaveAccessibleName`, `toHaveAttribute`, `toHaveClass`.
+- **Offen nur für `expect.element`:** Die Doku formuliert es browser-bezogen (Locators kommen aus `vitest/browser`). Dass es ohne Browser Mode läuft, ist nicht belegt und unwahrscheinlich. `expect.poll` ist davon getrennt (siehe Task 20).
+- `expect.element` mit Locators (`page.getBy*`) ist die Kernneuheit hier, mit automatischem Retry.
+- Angular-Material dazu: [Ninja Squad: Angular tests with Vitest browser mode](https://blog.ninja-squad.com/2025/11/18/angular-tests-with-vitest-browser-mode), Community-Paket `vitest-browser-angular` (Reife prüfen, Alternative zu `TestBed`-Rendering).
 - Brücke: Lesson 03 hat Browser-Tests gegen Stories vorgewärmt. Playwright-Browser sind vorab installiert (Preparation).
 - Spike nötig: Browser Mode im Nx-Workspace mit dem Angular-Builder, Zeit je Lauf.
 
@@ -144,8 +156,8 @@ Vorschlag für den Task: **drei Regeln** (Zyklen, `HttpClient`-Regel, Namenskonv
 
 ## Weitere offene Fragen
 
-- **Quelle zu den Grenzen von TestBed:** Gregor hat ein Video als Quelle. Link erfragen. Zusätzlich recherchieren (`whenStable`, `detectChanges`, Zoneless/`ComponentFixtureAutoDetect`), bevor die Folie entsteht.
-- **"Partieller Browser Mode":** Gemeint ist vermutlich `expect.element`/Locators ohne vollen Browser-Lauf. Mit Gregor bestätigen und im Spike prüfen.
+- **Quelle zu den Grenzen von TestBed:** Gregor hat ein Video als Quelle. Link erfragen. Erste Recherche steht in der Folientabelle oben, `whenStable`-Grenzen fehlen noch.
+- **"Partieller Browser Mode":** Recherche legt nahe, dass das ohne Browser nicht geht (siehe Task 20). Mit Gregor klären.
 - Testabstraktionen (Harnesses, Page Objects): eigener Task oder Teil von Testing Library?
 - Testpyramide: nur Folie oder Aufgabe? Vorschlag: eine kurze Einordnungsaufgabe zu den bisher geschriebenen Tests.
 - E2E: Playwright oder Cypress? Playwright wird für Browser-Tests in Lesson 03 ohnehin vorgewärmt.
