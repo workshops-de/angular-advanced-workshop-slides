@@ -62,15 +62,15 @@ Jeder Schritt setzt den vorherigen voraus, ist aber über **Checkpoints** (Git-T
 | #   | Lesson                                | Tasks (**fett** = existiert schon, ggf. angepasst)                                                                                         | Min |
 | --- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --- |
 | 01  | Introduction                          | **Preparation**, **Choose your lessons and focus**                                                                                         | 25  |
-| 02  | Architecture: Decisions, Structure & Mono-Repo | **ADR** (nach Folien zu Entscheidungen, Mono vs. Multi Repo) → **Project Structure** → Nx Migration (danach Folien Tool-Überblick) → Libraries extrahieren → **Enforce Module Boundaries** (auf Nx umgebaut) → Affected und eigene Commands → Architekturtest (ArchUnitTS, abhängig vom Spike) → Bonus: **Runtime Configuration** → Bonus: Generator für ein Aggregat | 95  |
+| 02  | Architecture: Decisions, Structure & Mono-Repo | **ADR** (nach Folien zu Entscheidungen, Mono vs. Multi Repo) → **Project Structure** → Nx Migration (danach Folien Tool-Überblick) → Libraries extrahieren → **Enforce Module Boundaries** (auf Nx umgebaut) → Affected und eigene Commands → Bonus: **Runtime Configuration** → Bonus: Generator für ein Aggregat | 80  |
 | 03  | Component Libraries                   | Autocomplete (Material/CDK) → generische Entity-Auswahl → Host-Directive → Einsatz → Storybook → Browser-Tests (Bonus: Aria, Routed Dialog)   | 110 |
 | 04  | State                                 | Zentral vs. dezentral (neu) → **Signal Store 1–8**                                                                                         | 110 |
-| 05  | Testing                               | **Vitest 1–5** → Testpyramide und Testbarkeit → Architekturtests (ArchUnitTS) → E2E (Playwright)                                                                           | 135 |
+| 05  | Testing                               | **Testbed** (Einstieg) → Vitest-Refactoring (`expect.poll`, `expect.element`) → Vitest Browser Mode → **Testing Library** → **Mock service, Mock components, Http** → Testpyramide und Testbarkeit → Architekturtests (ArchUnitTS, aus 02 verlegt) → E2E (Playwright) | 160 |
 | 06  | *entfallen*, aufgegangen in Lesson 02 (E7)                                                                                                | 0   |
 | 07  | Micro-Frontend                        | Monolith vs. Modulith vs. Micro-Frontend → Remote anbinden → Shared Dependencies                                                           | 45  |
 | 08  | Delivery & Governance                 | CI mit `nx affected` → Codeanalyse → CD → Anti-Patterns finden                                                                             | 50  |
 
-**Summe ca. 550 min (Architekturtest in 02, Lesson 05 verkürzt um 20) bzw. 555 min (Architekturtest bleibt in 05), also etwa 9 bis 9,5 h reine Aufgabenzeit bei 15 h Workshop.** Lesson 02 ist mit 95 min die größte Lesson mit Aufgaben, die Folienzeit kommt dazu. Das lässt Reserve für Folien, Diskussion, Pausen und Hänger.
+**Summe ca. 580 min, also etwa 9,7 h reine Aufgabenzeit bei 15 h Workshop.** Lesson 05 ist mit 160 min die größte Lesson, Lesson 02 hat 80 min. Die Folienzeit kommt dazu. Kürzungskandidaten stehen in Detailplan 05. Das lässt Reserve für Folien, Diskussion, Pausen und Hänger.
 
 ### Details zu neuen Tasks
 
@@ -82,7 +82,6 @@ Jeder Schritt setzt den vorherigen voraus, ist aber über **Checkpoints** (Git-T
 | Libraries           | Feature-Ordner und `data/` zu Libraries machen, Imports anpassen                         | 15  |
 | Module Boundaries   | Tags, `depConstraints`, bewusster Verstoß und Fehlermeldung                              | 15  |
 | Affected und eigene Commands | Cache, `nx affected`, eigenes Target (`nx:run-commands`, `dependsOn`), `nx run-many`, Brücke zu CI | 15  |
-| Architekturtest (offen) | eine Regel, die Nx nicht kann, mit ArchUnitTS; hängt vom Spike ab (siehe Detailplan 02) | 15  |
 | Bonus: Generator    | Nx-Generator bootstrapt Library für ein Aggregat (routing, client, page, model, Valibot-Schema) | 20+ |
 
 **03 Component Libraries**
@@ -102,7 +101,7 @@ Der Library-Vergleich (Spartan NG, PrimeNG, Material, DevExpress, Angular Aria) 
 
 **04 State:** nur ein neuer Task. Die bestehenden Signal-Store-Tasks werden auf die `data-access`-Library gemappt, nicht neu geschrieben. Kürzungspotenzial prüfen.
 
-**05 Testing:** neu sind Testpyramide/Testbarkeit (15), **Architekturtests (20)** und E2E (20). Details zu den Architekturtests (Werkzeug, Abgrenzung zu Nx Boundaries, Regelkandidaten) stehen im [Detailplan 05](./05-testing.md).
+**05 Testing:** neu sind Vitest-Refactoring (10), Vitest Browser Mode (15), Testpyramide/Testbarkeit (15), **Architekturtests (20, aus Lesson 02 verlegt)** und E2E (20). Der Testbed-Task bleibt als Einstieg für Teilnehmende ohne Testerfahrung, die Testing Library kommt erst nach den Vitest-Tasks. Details zu den Architekturtests (Werkzeug, Abgrenzung zu Nx Boundaries, Regelkandidaten) stehen im [Detailplan 05](./05-testing.md).
 
 ### Detailpläne je Lesson
 
@@ -155,9 +154,10 @@ Weitere Hebel:
 | E7  | **ADR steht am Anfang von Lesson 02**, damit Architekturentscheidungen im Team abgesichert sind, bevor umgebaut wird. **Runtime Configuration ist Bonus** in Lesson 02. Lesson 06 entfällt. | 2026-11-19 |
 | E8  | Formularanbindung der generischen UI-Komponente (Lesson 03) per **Signal Forms**, nicht ControlValueAccessor. | 2026-11-20 |
 | E9  | `@angular/material` und `@angular/aria` (plus Storybook-/Browser-Test-Pakete nach Recherche) werden im Workshop-Repo **vorinstalliert**. | 2026-11-20 |
+| E11 | Architekturtests liegen in **Lesson 05**, nicht in 02: Teilnehmende ohne Testerfahrung wären in 02 überfordert. Lesson 05 startet mit einem TestBed-Test als Einstieg, danach Vitest-Mittel (`expect.poll`, `expect.element`, Browser Mode), dann Testing Library. | 2026-11-20 |
 | E10 | Die Libraries `ui`, `data-access` und eine Feature-Library werden in Lesson 02 **leer angelegt**. Lesson 03 füllt `ui`. | 2026-11-20 |
 
-**E5 (2026-11-16):** Architekturtests gehören in die Testing-Lesson (05). Werkzeugkandidat ist ArchUnitTS. Welche Regeln wir lehren, klärt der [Detailplan 05](./05-testing.md).
+**E5 (2026-11-16):** Architekturtests gehören in die Testing-Lesson (05). Werkzeugkandidat ist ArchUnitTS. Welche Regeln wir lehren, klärt der [Detailplan 05](./05-testing.md). Ein Umzug nach Lesson 02 war erwogen, E11 bestätigt Lesson 05.
 
 ## 9. Recherche-Stand zu den Quellen
 

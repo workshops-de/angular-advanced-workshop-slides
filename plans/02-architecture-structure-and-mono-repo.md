@@ -4,9 +4,9 @@
 
 ## Ziel
 
-Das Team trifft zuerst **Architekturentscheidungen und hält sie als ADR fest**. Danach setzt es sie um: Die Bookmonkey-App bekommt eine feature-basierte Struktur und wird mit Nx zum Mono-Repo. Die Teilnehmenden zerlegen sie in Libraries und lassen Nx und einen Architekturtest die Entscheidungen absichern.
+Das Team trifft zuerst **Architekturentscheidungen und hält sie als ADR fest**. Danach setzt es sie um: Die Bookmonkey-App bekommt eine feature-basierte Struktur und wird mit Nx zum Mono-Repo. Die Teilnehmenden zerlegen sie in Libraries und lassen Nx die Entscheidungen absichern. Der Architekturtest folgt bewusst erst in [Lesson 05](./05-testing.md) (E11).
 
-Beworbene Inhalte, die hier landen: Architektur-Trade-off-Analyse, Architekturarbeit im Team, Feature-/Domain-basiert, Struktur für Enterprise-Plattformen, Multi- vs. Monorepo, Tool-Überblick, Architektur (Teil von Mono-Repo-Tools), Codeanalyse (Architekturtest).
+Beworbene Inhalte, die hier landen: Architektur-Trade-off-Analyse, Architekturarbeit im Team, Feature-/Domain-basiert, Struktur für Enterprise-Plattformen, Multi- vs. Monorepo, Tool-Überblick, Architektur (Teil von Mono-Repo-Tools). Die Codeanalyse (Architekturtest) wandert nach Lesson 05 und 08.
 
 Diese Lesson übernimmt die frühere Lesson 06 (Runtime Configuration und ADR). Siehe [Detailplan 06](./06-architecture-configuration-and-decisions.md).
 
@@ -17,7 +17,7 @@ Diese Pakete sind im Workshop-Repo bereits in `package.json` und werden **nicht*
 | Paket        | Wofür                                              |
 | ------------ | -------------------------------------------------- |
 | `@nx/angular` (Nx-Angular-Plugin) | Nx-Migration (Task 30), Library-Generatoren (Task 40) |
-| `archunit` (ArchUnitTS) | Architekturtest (Task 70)                          |
+| `archunit` (ArchUnitTS) | wird erst in Lesson 05 genutzt (Architekturtests), hier nur vorinstalliert |
 | `valibot`    | Schema im Bonus-Generator (Task 90)                |
 
 Folgen:
@@ -34,7 +34,7 @@ Lesson 01 (laufende App). Ausgangspunkt ist `main` des Workshop-Repos.
 
 ## Dramaturgie
 
-Entscheiden → Konvention → sichtbar → physisch → erzwungen → genutzt → abgesichert:
+Entscheiden → Konvention → sichtbar → physisch → erzwungen → genutzt:
 
 1. **Entscheiden:** Das Team legt Architekturentscheidungen fest und hält sie als ADR fest (Task 10). Das steht am Anfang, weil alles Folgende diese Entscheidungen umsetzt und absichert.
 2. Die Struktur wird als Ordnerkonvention eingeführt (20).
@@ -42,10 +42,9 @@ Entscheiden → Konvention → sichtbar → physisch → erzwungen → genutzt �
 4. Die Libraries machen sie physisch. Am Ende von Task 40 bauen die Teilnehmenden **bewusst einen Verstoß** ein (z. B. `ui` importiert aus `data-access`). Nichts schlägt an, nur `nx graph` zeigt die falsche Kante.
 5. Die Boundaries sind die Antwort auf dieses selbst erzeugte Problem (50). Die Tag-Regeln werden im ADR als Konsequenz nachgetragen.
 6. Affected und eigene Commands nutzen die Struktur (60).
-7. Ein Architekturtest sichert ab, was Nx nicht ausdrücken kann (70, abhängig vom Spike).
-8. Bonus: Runtime Configuration (80) und ein Generator, der die Struktur automatisiert (90).
+7. Bonus: Runtime Configuration (80) und ein Generator, der die Struktur automatisiert (90).
 
-Der rote Faden: **Entscheidung → Umsetzung → Absicherung.** Der ADR aus Task 10 ist die Quelle, Boundaries (50) und Architekturtest (70) sind die Absicherung im Code.
+Der rote Faden: **Entscheidung → Umsetzung → Absicherung.** Der ADR aus Task 10 ist die Quelle, Boundaries (50) sind die Absicherung im Code. Was Nx nicht ausdrücken kann, sichert der Architekturtest in Lesson 05 ab. Er steht dort, weil Teilnehmende ohne Testerfahrung hier sonst überfordert wären.
 
 ## Tasks
 
@@ -57,11 +56,10 @@ Der rote Faden: **Entscheidung → Umsetzung → Absicherung.** Der ADR aus Task
 | 40  | Libraries extrahieren          | neu                                | 15  | Feature-Ordner und `data/` werden Libraries (`feature-*`, `data-access`, `ui`). `ui` und `data-access` werden zunächst leer angelegt und in Lesson 03/04 gefüllt. Abschluss: bewusster Verstoß. |
 | 50  | Enforce Module Boundaries      | existiert, **umbauen**             | 15  | Tags und `depConstraints` mit `@nx/enforce-module-boundaries`. Stufe 1: nur `type`. Stufe 2 (oder Bonus): `scope`. ADR um die Regeln ergänzen. |
 | 60  | Affected und eigene Commands   | neu                                | 15  | Cache und `nx affected` (inkl. `--graph`, `--explain`), eigenes Target mit `nx:run-commands`, `dependsOn`, `nx run-many`. Brücke zu CI (Lesson 08). |
-| 70  | Architekturtest (ArchUnitTS)   | neu, **abhängig vom Spike**        | 15  | Eine Regel, die Nx nicht kann (Zyklen, Namenskonvention oder "keine `HttpClient`-Injection in Komponenten"). Abgrenzung: Nx prüft Projekt gegen Projekt, ArchUnit Dateien und Ordner. |
 | 80  | Bonus: Runtime Configuration   | existiert (`04-runtime-configuration`), **umbauen**, **Bonus** | 10  | Konfiguration zur Laufzeit statt Build-Zeit (ein Build, mehrere Stages), siehe unten. |
 | 90  | Bonus: Generator für ein Aggregat | neu, **Bonus**                  | 20+ | Eigener Nx-Generator, der eine Library mit Grundstruktur für ein Aggregat erzeugt (siehe unten). |
 
-Summe ohne Bonus: **95 min** (ohne Task 70: 80 min). Mono vs. Multi Repo und weitere Themen sind reiner Folieninhalt (siehe Abschnitt "Folieninhalte ohne Task") und zählen hier nicht als Task.
+Summe ohne Bonus: **80 min**. Die Nummer 70 ist frei (dort stand der Architekturtest, jetzt Lesson 05, Task 90). Die Bonus-Nummern 80 und 90 bleiben, damit die Verweise in anderen Plänen stabil sind. Mono vs. Multi Repo und weitere Themen sind reiner Folieninhalt (siehe Abschnitt "Folieninhalte ohne Task") und zählen hier nicht als Task.
 
 ### Task 10: Architecture Decision Record
 
@@ -83,7 +81,7 @@ Idee: Zuerst eine Änderung in `ui` machen und mit `nx affected -t test --graph`
 - `--explain` zeigt, warum ein Projekt betroffen ist.
 - Eigener Command als Target in `project.json` oder `nx.json`, z. B. `nx:run-commands` für einen Check oder ein Skript. Kandidat: ein Target `check`, das über `dependsOn` Lint und Test bündelt.
 - `nx run-many -t check` über alle Projekte, danach dasselbe nur affected.
-- Offen: Konkretes Beispiel für den eigenen Command festlegen. Er sollte später in der CI (Lesson 08) und im Architekturtest (Task 70) wiederverwendbar sein.
+- Offen: Konkretes Beispiel für den eigenen Command festlegen. Er sollte später in der CI (Lesson 08) und beim Architekturtest (Lesson 05) wiederverwendbar sein.
 
 ### Task 80 (Bonus): Runtime Configuration
 
@@ -113,7 +111,7 @@ Der Generator erzeugt (Ausgangsidee, am Beispiel `book`):
 Vorgehen: `nx g @nx/plugin:plugin` bzw. `@nx/plugin:generator` (zu recherchieren), Template-Dateien mit `__name__`-Platzhaltern, Schema-Optionen für `name`, `scope`. Ergebnis wird mit `nx graph` und den Boundaries aus Task 50 geprüft.
 
 - Verknüpfung: Der Generator darf die Boundaries nicht verletzen. Sonst scheitert Task 50 am eigenen Output.
-- Verknüpfung: Ein ArchUnit-Test (Task 70) kann prüfen, ob generierte Libraries der Konvention entsprechen.
+- Verknüpfung: Ein ArchUnit-Test (Lesson 05, Task 90) kann prüfen, ob generierte Libraries der Konvention entsprechen.
 - Bonus-Dateien: `bonus.md` zum Task 60 oder eigener Task-Ordner. Entscheidung bei der Umsetzung.
 
 ## Folieninhalte ohne Task
@@ -127,8 +125,8 @@ Diese Themen sind beworbene Inhalte, bekommen aber **keine Aufgabe**. Sie leben 
 | Mono vs. Multi Repo                    | vor Task 10                | Warum-Frage und Entscheidungskriterien (Team- und Codebasis-Größe, Release-Kopplung, Code-Sharing, CI-Kosten, Ownership). Diskussion statt Aufgabe. Liefert Optionen für den ADR. | Multi- vs. Monorepo                    |
 | Tool-Überblick: Nx, Bit, Rush, Turborepo | nach Task 30             | Vergleich anhand dessen, was die Teilnehmenden gerade mit Nx erlebt haben (Graph, Cache, Generatoren).                     | Tool-Überblick                         |
 | Library-Typen und Tag-Modell           | vor Task 50                | Konzept `type` (feature → data-access → ui) und `scope`, erlaubte Abhängigkeitsrichtung. Vorbereitung der `depConstraints`. | Architektur (Teil von Mono-Repo-Tools) |
-| Grenzen der Werkzeuge                  | vor Task 70                | Was Nx Boundaries prüft (Projekt gegen Projekt) und was nicht (Dateien, Zyklen, Namen). Überleitung zum Architekturtest.   | Architektur, Codeanalyse               |
-| Brücke zu CI und Governance            | nach Task 60               | Ausblick auf Lesson 08: `nx affected` und Architekturtests in der Pipeline.                                                 | CI, CD                                 |
+| Grenzen der Werkzeuge                  | nach Task 50               | Was Nx Boundaries prüft (Projekt gegen Projekt) und was nicht (Dateien, Zyklen, Namen). Ausblick: Der Architekturtest in Lesson 05 schließt diese Lücke. | Architektur, Codeanalyse               |
+| Brücke zu CI und Governance            | nach Task 60               | Ausblick auf Lesson 08: `nx affected` in der Pipeline (Architekturtests siehe Lesson 05).                                                 | CI, CD                                 |
 
 Offen: Welche dieser Themen bekommen eine eigene Folie, welche nur eine Sprechernotiz? Die Folien selbst liegen in Google Slides und werden über den Skill `slide-creator` abgesichert.
 
@@ -158,7 +156,7 @@ Vorschlag für das Tag-Modell (zu validieren): zwei Dimensionen, `scope` (welche
 - **Eigener Command in Task 60:** Welches konkrete Target? Siehe Task 60.
 - **ADR in Task 10:** Entscheidung vorgeben oder selbst treffen lassen? Siehe Task 10.
 - **Runtime Configuration (Bonus):** In welcher Library liegt `RuntimeConfiguration`?
-- **ArchUnitTS in 02 statt 05:** Installation ist durch E6 erledigt, offen bleibt der Spike (Pfad-Aliase, Nx-Anbindung). Bei Umzug ändern sich E5, Plan 05 und die Lesson-Tabelle im Master-Plan.
+- **Architekturtest:** entschieden (E11), liegt in Lesson 05. Spike (Pfad-Aliase, Nx-Anbindung) siehe Plan 05.
 - **`nx init` standalone oder `--integrated`?** Standalone behält das Dateilayout, integrated verschiebt nach `apps/` und `libs/`. Entscheidung im Spike.
 - **Welche Libraries genau?** Nur drei Typen (feature, data-access, ui) oder feiner?
 - **Library-Generatoren:** Befehle für Angular-Libraries in Nx sind noch nicht recherchiert.
@@ -166,7 +164,7 @@ Vorschlag für das Tag-Modell (zu validieren): zwei Dimensionen, `scope` (welche
 
 ## Risiken
 
-- Die Tasks summieren sich auf 95 min plus Bonus (Lesson war ursprünglich mit 75 min geplant), dazu kommt die Folienzeit. Kürzungskandidaten in dieser Reihenfolge: `scope`-Tags, Task 70, Task 60. Runtime Configuration und Generator sind Bonus.
+- Die Tasks summieren sich auf 80 min plus Bonus (Lesson war ursprünglich mit 75 min geplant), dazu kommt die Folienzeit. Kürzungskandidaten in dieser Reihenfolge: `scope`-Tags, Task 60. Runtime Configuration und Generator sind Bonus.
 - Vorinstallierte Pakete können mit `nx init` kollidieren (Versionen, Dopplungen). Im Spike prüfen.
 - Die Nx-Migration kann je nach Angular-Version Stolpersteine haben. Ohne Spike ist die Zeitschätzung unsicher.
 - Imports und Pfad-Aliase beim Verschieben sind fehleranfällig. Checkpoint-Tags nach Task 30 und 40 sind sinnvoll.
