@@ -1,3 +1,6 @@
 [submodule "sample-solution"]
 	path = sample-solution
 	url = git@github.com:workshops-de/angular-advanced-workshop.git
+[submodule "slidev-slides"]
+	path = slidev-slides
+	url = git@github.com:workshops-de/angular-modul-2-slides.git
