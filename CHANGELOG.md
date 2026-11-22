@@ -2,6 +2,22 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+# [1.1.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.0.1...v1.1.0) (2026-11-22)
+
+
+### Bug Fixes
+
+* clarify naming conventions for solution commits in SKILL.md ([fa7753e](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/fa7753ee7a1a58f344a1afbbaa3988b5e5cdfcb0))
+* correct command for listing solution commits in SKILL.md ([1c4c8dc](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/1c4c8dc7951fa24da14766089e0aa888da7a1df2))
+* update sample-solution submodule reference to the latest commit ([309faf7](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/309faf7ecf5a0607df7425ea7bab150421faa9db))
+* update sample-solution submodule reference to the latest commit ([68a9946](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/68a9946fae804075e8a1550a2b9d4d1888ba3aad))
+
+
+### Features
+
+* add architecture decision record and presentational/container components tasks ([71d35e8](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/71d35e8b3be8d12df324fcc700faba512f87721d))
+* add Nx migration task and hints for transitioning to a mono-repo structure ([08c7e36](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/08c7e367dac48682f78cdabe2532e715ea4d4d77))
+
 ## [1.0.1](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.0.0...v1.0.1) (2026-11-22)
 
 
