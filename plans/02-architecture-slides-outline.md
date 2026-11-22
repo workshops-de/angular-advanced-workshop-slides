@@ -45,12 +45,12 @@
 
 ### Konflikte und offene Punkte
 
-- **K1:** Die Slides "Enforcing Boundaries" und "public-api.ts + Path Aliases" nennen `eslint-plugin-boundaries`/Sheriff. Plan E1 sagt "ausschließlich Nx". Vorschlag: Folien bleiben, werden als "Other tools" gerahmt, Nx `@nx/enforce-module-boundaries` wird zur Hauptlösung ergänzt.
-- **K2:** Component Architecture, State, Performance haben keinen Task und stehen nicht im 80-min-Plan. Vorschlag: bleiben als kompakte Theorieblöcke, Kürzungskandidaten bei Zeitnot (nicht löschen, ggf. in Hidden/Appendix verschieben).
-- **K3:** Bei Smart/Dumb, Facade und Layering taucht "Facade" auf; Lesson 04 nutzt Signal Store. Prüfen, ob Begriff konsistent bleibt.
+- **K1 (entschieden):** Alle Ansätze werden gegenübergestellt: Sheriff, eslint-plugin-boundaries und Nx. Zusätzlich ein Syntaxvergleich eslint-plugin-boundaries vs. Nx (Folien 71a bis 71c), damit sichtbar wird, wie ähnlich die Regeln sind.
+- **K2 (entschieden):** Component Architecture, State Management, Layering und Performance bekommen keinen Task, werden aber vollständig erklärt. Viele Teilnehmende kennen die Prinzipien, sie sind trotzdem zentral. Die Folien bekommen daher je eine Main-Point-Folie mit der Kernregel. Die frühere Annahme "80 min" stammt aus der Task-Summe im Plan (nur Aufgabenzeit, ohne Theorie) und ist keine Gesamtdauer.
+- **K3 (entschieden):** Facade wird in den Slides diskutiert, nicht übergangen. Folien 51a bis 51d: was eine Facade ist, wann sie sich lohnt, was sie kostet, und warum der Signal Store ihre Bedeutung abschwächt. Verbindung zu Lesson 04.
 - **K4:** "Mono vs. Multi" und "Microfrontends" stehen in einer Zeile in "Project Structure Options". Beide bekommen echte Folien (Mono/Multi hier, Microfrontends Verweis auf Lesson 07).
 - **K5:** Bilder aus Slidev (`feature-vs-layer-based.png`, `nx-dependency-graph.png`, `enforcing-module-boundaries.png`, `types-of-ui-state.png`, `facade-pattern-angular-architecture.png`) und vier tldraw-Diagramme müssen exportiert/neu gezeichnet werden.
-- **K6:** `lesson.yml` von `lessons/02-architecture` enthält keine `google_slide_id`. Vor dem Anlegen in Google Slides muss die Ziel-Präsentation festgelegt werden.
+- **K6 (gelöst):** `google_slide_id` steht in `lessons/02-architecture-structure-monorepositories/lesson.yml` (`1xguyWc-kOnPFz4b-gS74qzXyvYiRBRCgdaadEkKvvr4`). Das Ziel-Deck existiert schon, siehe Abschnitt 8.
 
 ---
 
@@ -159,6 +159,12 @@ Der Block wird aus dem Ende des Decks nach vorn verschoben (M).
 | 49  | Little What    | Typical Layers                       | UI (components) → Facade → Domain / Services → API                                                                                     | E    |
 | 50  | What           | Layering: UI → Facade → Domain → API | 4 Bullets Layer-Verantwortung + Diagramm                                                                                               | E    |
 | 51  | What (Bild)    | Facade Pattern in Angular            | Bild `facade-pattern-angular-architecture.png`                                                                                         | E    |
+| 51a | Little What | What Is a Facade? | A facade bundles functions of several stores or services behind one API. Only what should be used from outside is exposed | N |
+| 51e | Code Window Explanation | Facade Across Libraries | Beispiel: Libraries teilen Funktionen über eine Facade, auf die sich das Team geeinigt hat. Code siehe Abschnitt 9 (Teil 1: Facade, Teil 2: `index.ts` mit Public API). Rechts: Agreement, only the facade is exported, internals stay private | N |
+| 51f | Code Window | Using the Facade | Consumer in anderer Library injiziert nur die Facade (Code Abschnitt 9, Teil 3) | N |
+| 51b | Why | Why Use a Facade? | Bullets: one entry point for components / less coupling to internals / more comfort for developers / encapsulates functionality | N |
+| 51c | Main Point | A Facade Comes at a Price | Extra layer means more maintenance. Use it only when you need it | N |
+| 51d | What If? | Do We Still Need Facades? | Signal Store (Lesson 04) encapsulates and bundles state itself, so the facade loses weight. Diskussion im Plenum: where would you still add one? | N |
 | 52  | How            | From Folders to Libraries            | Feature-Ordner und `data/` werden Libraries: `feature-*`, `data-access`, `ui`. Public API = `index.ts` der Library                     | N    |
 | 53  | What           | Library Types                        | `feature` → `data-access` → `ui`; Richtung der Abhängigkeit nur abwärts. `ui` und `data-access` zunächst leer, gefüllt in Lesson 03/04 | N    |
 | 54  | Task           | Extract Libraries                    | Task 40; letzter Schritt: bewusst `ui` aus `data-access` importieren, `nx graph` zeigt die falsche Kante                               | T    |
@@ -174,6 +180,7 @@ Diese Blöcke füllen die `ui`- und `data-access`-Libraries und bereiten Lesson 
 | 57  | Why             | Why Component Architecture Matters | Smart vs. dumb improves testability and reusability; clear separation makes changes safer | E    |
 | 58  | Little What     | Smart vs. Dumb Components          | Smart (container), dumb (presentational), design systems use dumb                         | E    |
 | 59  | How             | Smart & Dumb: Data Flow            | 4 Schritte Data-Flow + Mermaid-Diagramm + Callout (dumb = testable, reusable)             | E    |
+| 59a | Main Point      | Dumb components render, smart components orchestrate           | Kernregel in einem Satz. Kein Task, aber ausführlich erklären (Beispiel aus bestehendem Google-Deck: Book-Karte in Home und Kategorieliste) | N    |
 | 60  | What (Diagramm) | Component Architecture Overview    | tldraw-Diagramm                                                                           | E    |
 | 61  | Section header  | State Management & Data Flow       | –                                                                                         | E    |
 | 62  | Why             | Why State Management Matters       | Centralized vs. decentralized, clear data flow reduces bugs                               | E    |
@@ -190,7 +197,10 @@ Diese Blöcke füllen die `ui`- und `data-access`-Libraries und bereiten Lesson 
 | 68  | What                    | Library Types and Tags      | `type` (feature, data-access, ui) und `scope` (Domäne); erlaubte Richtung. Stufe 1: nur `type`; `scope` später oder Bonus  | N               |
 | 69  | Code Window Explanation | Tags in project.json        | Snippet `"tags": ["scope:book", "type:feature"]`                                                                           | N               |
 | 70  | Code Window Explanation | depConstraints              | Snippet `eslint.config.mjs` mit `@nx/enforce-module-boundaries`; Erklärung: `type:feature` darf nur `data-access` und `ui` | N               |
-| 71  | Little What             | Other Ways to Enforce       | Sheriff, eslint-plugin-boundaries (Links beibehalten)                                                                      | E (Konflikt K1) |
+| 71  | Why             | Options to Enforce Boundaries | Gegenüberstellung: Sheriff, eslint-plugin-boundaries, Nx (Tabelle: Konfiguration, Tag-Modell, Graph-Anbindung, Links beibehalten) | E (K1) |
+| 71a | Code Window Explanation | eslint-plugin-boundaries | Regel-Snippet (`boundaries/elements`, `boundaries/element-types`); rechts: wie Elemente und erlaubte Richtungen definiert werden | E + N |
+| 71b | Code Window Explanation | Nx: Same Rule | Gleiche Regel mit Tags und `depConstraints`; rechts: Zuordnung Element → Tag, `element-types` → `depConstraints` | N |
+| 71c | What | Syntax Compared | Zwei Spalten Seite an Seite (eslint-plugin-boundaries vs. Nx): Fazit "very similar, Nx knows the project graph" | N |
 | 72  | What (Bild)             | Enforcing Module Boundaries | Bild `enforcing-module-boundaries.png`                                                                                     | E               |
 | 73  | Task                    | Enforce Module Boundaries   | Tags, `depConstraints`, den Verstoß aus Task 40 finden; ADR um Tag-Regeln ergänzen                                         | T               |
 | 74  | What If?                | Limits of the Tools         | Nx prüft Projekt gegen Projekt, nicht Dateien, Zyklen, Namen. Ausblick: Architekturtest in Lesson 05                       | N               |
@@ -262,11 +272,86 @@ Alle 68 Slidev-Folien sind mit **E**, **M** oder **T** wiederzufinden. Zusammeng
 | Teil 9      | 7      | 15 min (Task 60) |
 | Teile 10-12 | 17     | Bonus 80/90      |
 
-Task-Summe 80 min. Kürzungskandidaten (Plan, Risiken): `scope`-Tags, Task 60. Zusätzlich aus Folienzeit: Teil 7 (Component/State) und Performance (K2).
+Die Task-Summe von 80 min stammt aus dem Plan und enthält nur Aufgabenzeit, keine Theorie. Die Gesamtdauer der Lesson ergibt sich erst mit der Folienzeit. Kürzungskandidaten (Plan, Risiken): `scope`-Tags, Task 60. Teil 7 und Performance bleiben vollständig (K2), sind aber kompakt erklärt, ohne Task.
 
 ## 7. Nächste Schritte
 
-1. Ziel-Präsentation in `lesson.yml` (`google_slide_id`) festlegen (K6).
-2. K1 bis K3 entscheiden (Rahmung Sheriff/eslint-plugin-boundaries, Teil 7 behalten oder in Appendix).
+1. Facade-Folien 51a bis 51d (K3) mit Lesson 04 abstimmen.
 3. Bestehende Google-Slides mit `summarize_presentation` gegen dieses Outline abgleichen (Skill-Schritte 3 bis 5), dann Folien anlegen.
 4. 4-MAT je Teil prüfen: Why (Folien Why), What (Little What/What), How (Task), What if (What If?). Teile 7 und 10 haben keinen How-Task.
+
+## 8. Bestehendes Google-Deck (Stand heute)
+
+Titel: "[workshops.de] 1000 Angular - Architecture, Structure & Mono Repositories", 23 Folien. Es ist inhaltlich das **alte, modulbasierte Deck** und deckt weder Nx noch ADR noch Boundaries ab.
+
+| Alt-Folien | Inhalt | Umgang |
+| ---------- | ------ | ------ |
+| 1-2 | Titel "Architecture, Structure & Monorepositories", Section "How to structure my Angular app" | behalten als Deck-Titel (Teil 1) |
+| 3, 8, 10 | "Main topics in Angular applications": Modules, Components, State Management | als Agenda/Überblick behalten (Teil 1, Folie 3-4) |
+| 4-7 | Core, Shared, Feature Modules, Styling (UI Module) | **Konflikt:** Modulkonzept ist durch Standalone und Libraries überholt. Inhalt nicht löschen, sondern als "Before: NgModules" einordnen und auf Libraries (`ui`, `feature`, `data-access`) abbilden (Teil 6) |
+| 9, 11-12 | Components und State Management (State tree, Reducers, Selectors, Router State, Single Source of Truth) | in Teil 7 einarbeiten (Smart/Dumb, State); Redux-Begriffe als Vergleich zu Signal Store |
+| 13-14 | Component Types: Container und Presentational | = Smart/Dumb (Teil 7), zusammenführen |
+| 15-20 | Presentational vs. Container, Beispiel Book-Karte, Diagramm | Teil 7, Beispiel für Folie 59a |
+| 21 | Container vs. Presentational (nicht alles extrahieren) | Teil 7, als Callout |
+| 22-23 | "Identify component types", "Set ChangeDetectionStrategy to OnPush" | Aufgaben-Reste: als Task-Folie oder Performance-Checklist (Folie 85) prüfen |
+
+Vorgehen (Skill `slide-creator`, Schritte 3 bis 7): neue Folien in Englisch anlegen, bestehende anpassen, Reihenfolge per `updateSlidesPosition` herstellen. Ein vollständiger Abgleich Folie für Folie braucht noch die Notizen und Layout-Namen der Alt-Folien.
+
+
+## 9. Code-Beispiel Facade (für Folien 51e und 51f)
+
+Szenario: Die Library `feature-reading-list` braucht Funktionen aus `data-access-book` und `data-access-user`. Das Team einigt sich: Libraries teilen Funktionen nur über eine Facade. Die Facade bündelt beide Stores und bietet eine kleine API. Stores und Clients bleiben intern.
+
+**Teil 1: Facade (`libs/reading-list/data-access/src/lib/reading-list.facade.ts`)**
+
+```ts
+@Injectable({ providedIn: 'root' })
+export class ReadingListFacade {
+  readonly #books = inject(BookStore);
+  readonly #user = inject(UserStore);
+
+  // Only what consumers need
+  readonly books = this.#books.entities;
+  readonly userName = this.#user.name;
+
+  readonly favorites = computed(() =>
+    this.#books.entities().filter((book) =>
+      this.#user.favoriteIds().includes(book.id),
+    ),
+  );
+
+  addFavorite(bookId: string): void {
+    this.#user.addFavorite(bookId);
+  }
+}
+```
+
+**Teil 2: Public API (`index.ts`), nur die Facade ist exportiert**
+
+```ts
+export { ReadingListFacade } from './lib/reading-list.facade';
+// BookStore and UserStore are NOT exported
+```
+
+**Teil 3: Consumer in einer anderen Library**
+
+```ts
+@Component({
+  selector: 'app-favorites',
+  template: `
+    @for (book of facade.favorites(); track book.id) {
+      <app-book-card [book]="book" />
+    }
+  `,
+})
+export class FavoritesComponent {
+  protected readonly facade = inject(ReadingListFacade);
+}
+```
+
+Folien-Hinweise:
+
+- Step-Highlighting: Zeile `#books`/`#user` (Bündelung), `favorites` (abgeleitete Sicht), `index.ts` (nur Facade exportiert).
+- Syntax-Highlighting über das Layout "Code Window" (Skill `slide-creator`, `references/code-window.md` vorher lesen).
+- Der Code ist ein Entwurf und muss gegen die echte Bookmonkey-API (Stores aus Lesson 04) geprüft werden, bevor er auf die Folie kommt.
+- Anschluss an Folie 51c/51d: Wartungsaufwand der Facade sichtbar machen (jede neue Funktion braucht eine Weiterleitung).
