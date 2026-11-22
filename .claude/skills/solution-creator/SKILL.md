@@ -28,6 +28,18 @@ description: Plans and applies solutions to workshop tasks. Automates the integr
   - Ask if a new solution-commit should be created
   - If yes ask where the commit needs to be created (between which commits in the solution branch)
 
+## Naming commits
+
+- Every task solution is exactly one commit on the solution branch.
+- Its message is `solution--<topic>-<topic-part>`, all lowercase, words separated by `-`. Nothing else: no Conventional-Commit type, no body.
+  - `<topic>` is the lesson topic, e.g. `architecture`
+  - `<topic-part>` is the task, e.g. `nx-migration`
+  - Example: `solution--architecture-nx-migration`
+- The name must match `git_tag_completed` in the task's `task.yml` (see `/task-creator`).
+- Preparation that attendees get before a lesson (e.g. installing packages) is a normal Conventional Commit (`chore: ...`) on the base branch (`main`), not a solution commit. The solution branch is rebased onto it.
+- Migrations and other steps that are a task themselves get their own solution commit, e.g. `solution--architecture-nx-migration`.
+- Do not put Conventional-Commit commits on the solution branch; they belong on `main`.
+
 ## Defining the Scope
 
 - Ask for the learning outcome for the workshop attendees
