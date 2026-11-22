@@ -1,10 +1,9 @@
-name: Angular - Signal Store
+name: Angular - NgRx Signal Store
 position: 3
-trainer: "gregor@entwicklungszeit.dev"
-slides_type: slidev
+trainer: 'gregor@entwicklungszeit.dev'
 github_code_url: https://github.com/workshops-de/angular-advanced-workshop
-git_tag_starting: solve--architecture-decision-record
-slides_url: https://workshops-de.github.io/angular-modul-2-slides/03-signal-store
+git_tag_starting: solution--architecture-runtime-configuration
+google_slide_id: 19Nc1jaKvhiPg7rGQxZ2LUD_cARG7qXQtxXEZlSbalfs
 pdf_generation_enabled: true
 stackblitz_enabled: false
 codesandbox_enabled: false

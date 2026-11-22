@@ -1,7 +1,6 @@
 name: 'Angular - Architecture, Structure & Mono Repositories'
 position: 2
 trainer: 'gregor@entwicklungszeit.dev'
-slides_type: slidev
 github_code_url: https://github.com/workshops-de/angular-advanced-workshop
 git_tag_starting: main
 google_slide_id: 1xguyWc-kOnPFz4b-gS74qzXyvYiRBRCgdaadEkKvvr4
