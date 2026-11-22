@@ -3,10 +3,10 @@
   "skills": {
     "angular-developer": {
       "source": "angular/skills",
+      "commit": "97c663a02b376a19eccc60f75909f20f15a2c9c1",
       "sourceType": "github",
       "skillPath": "angular-developer/SKILL.md",
-      "computedHash": "50ac5be541125767b4864c31ecf2947558bf4a897b54cedd1d43e04b857f4e42",
-      "commit": "c86b20dc9233ecdb52928b336c2b2b87be9d2692"
+      "computedHash": "05d5488f770874f6f12e6d365611a6eae449f29481a52cd8a89929e448426c54"
     }
   }
 }
