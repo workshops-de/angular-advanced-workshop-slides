@@ -6,7 +6,7 @@
   "description": "Tooling für das Angular-Workshop-Lessons-Repo (Commit-Guard via Husky + commitlint).",
   "repository": {
     "type": "git",
-    "url": "https://github.com/workshops-de/angular-workshop-slides.git"
+    "url": "https://github.com/workshops-de/angular-advanced-workshop-slides.git"
   },
   "scripts": {
     "release": "semantic-release",
