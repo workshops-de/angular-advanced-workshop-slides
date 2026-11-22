@@ -1,7 +1,7 @@
-# Angular Workshop – Lessons
+# Angular Advanced Workshop – Lessons
 
 Dieses Repository enthält **nur die Lessons** (Aufgabentexte, Hinweise, Metadaten) für den Angular-Workshop.
-Der Übungscode liegt in [`workshops-de/angular-workshop`](https://github.com/workshops-de/angular-workshop),
+Der Übungscode liegt in [`workshops-de/angular-advanced-workshop`](https://github.com/workshops-de/angular-advanced-workshop),
 die Folien in Google Slides.
 
 ## Für wen
