@@ -2,6 +2,15 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+# [1.2.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.1.0...v1.2.0) (2026-11-22)
+
+
+### Features
+
+* add Nx libraries task and hints for code organization ([713b860](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/713b8605194ccaf0b57f4effea4829e1323e9a5a))
+* add runtime configuration task with JSON file and service integration ([7408052](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/74080522f078d1383ce2988e4dec78cf8ee01271))
+* update settings and documentation for Nx configuration guidelines ([f440bb7](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/f440bb7514e268d322f942625f387ecfd9c85b62))
+
 # [1.1.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.0.1...v1.1.0) (2026-11-22)
 
 
