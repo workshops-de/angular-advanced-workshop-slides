@@ -282,18 +282,21 @@ Die Task-Summe von 80 min stammt aus dem Plan und enthält nur Aufgabenzeit, kei
 
 ## 8. Bestehendes Google-Deck (Stand heute)
 
-Titel: "[workshops.de] 1000 Angular - Architecture, Structure & Mono Repositories", 23 Folien. Es ist inhaltlich das **alte, modulbasierte Deck** und deckt weder Nx noch ADR noch Boundaries ab.
+Titel: "[workshops.de] 1000 Angular - Architecture, Structure & Mono Repositories", **22 Folien** (Folie 22 ist leer). Es ist inhaltlich das **alte, modulbasierte Deck** und deckt weder Nx noch ADR noch Boundaries ab.
 
 | Alt-Folien | Inhalt | Umgang |
 | ---------- | ------ | ------ |
 | 1-2 | Titel "Architecture, Structure & Monorepositories", Section "How to structure my Angular app" | behalten als Deck-Titel (Teil 1) |
 | 3, 8, 10 | "Main topics in Angular applications": Modules, Components, State Management | als Agenda/Überblick behalten (Teil 1, Folie 3-4) |
-| 4-7 | Core, Shared, Feature Modules, Styling (UI Module) | **Konflikt:** Modulkonzept ist durch Standalone und Libraries überholt. Inhalt nicht löschen, sondern als "Before: NgModules" einordnen und auf Libraries (`ui`, `feature`, `data-access`) abbilden (Teil 6) |
-| 9, 11-12 | Components und State Management (State tree, Reducers, Selectors, Router State, Single Source of Truth) | in Teil 7 einarbeiten (Smart/Dumb, State); Redux-Begriffe als Vergleich zu Signal Store |
-| 13-14 | Component Types: Container und Presentational | = Smart/Dumb (Teil 7), zusammenführen |
-| 15-20 | Presentational vs. Container, Beispiel Book-Karte, Diagramm | Teil 7, Beispiel für Folie 59a |
-| 21 | Container vs. Presentational (nicht alles extrahieren) | Teil 7, als Callout |
-| 22-23 | "Identify component types", "Set ChangeDetectionStrategy to OnPush" | Aufgaben-Reste: als Task-Folie oder Performance-Checklist (Folie 85) prüfen |
+| 4-7 | Core, Shared, Feature Modules, Styling (UI Module) | **Konflikt:** Modulkonzept ist durch Standalone und Libraries überholt. Nicht löschen, als "Before: NgModules" einordnen und auf Libraries (`ui`, `feature`, `data-access`) abbilden (Teil 6) |
+| 9, 11 | Components; State Management (State tree, Reducers, Selectors, Router State, Single Source of Truth) | Teil 7; Redux-Begriffe als Vergleich zum Signal Store |
+| 12-13 | Component Types: Container und Presentational | = Smart/Dumb (Teil 7), zusammenführen |
+| 14 | Leitfragen (structure, interaction, services in components, reuse) | Why-Folie in Teil 7 |
+| 15-16 | Presentational und Container Components | Teil 7 |
+| 17-18 | Beispiel Book-Karte, Diagramm | Teil 7, Beispiel für Folie 59a |
+| 19 | Container vs. Presentational (nicht alles extrahieren) | Teil 7, als Callout |
+| 20-21 | "Identify component types", "Set ChangeDetectionStrategy to OnPush" | Aufgaben-Reste: als Task-Folie oder Performance-Checklist (Folie 85) prüfen |
+| 22 | leer | löschen oder als Platzhalter nutzen |
 
 Vorgehen (Skill `slide-creator`, Schritte 3 bis 7): neue Folien in Englisch anlegen, bestehende anpassen, Reihenfolge per `updateSlidesPosition` herstellen. Ein vollständiger Abgleich Folie für Folie braucht noch die Notizen und Layout-Namen der Alt-Folien.
 
