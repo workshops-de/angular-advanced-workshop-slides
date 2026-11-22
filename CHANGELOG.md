@@ -2,6 +2,14 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+# [1.3.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.2.0...v1.3.0) (2026-11-22)
+
+
+### Features
+
+* add layout references for Google Slides presentation IDs ([e2ee22e](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/e2ee22e8cb40cc8a737db90bb291bf384b6c362d))
+* update lessons for NgRx Signal Store with improved structure and clarity ([bc0afb4](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/bc0afb4e55d5e53dddd98ee566b8cf9e99328069))
+
 # [1.2.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.1.0...v1.2.0) (2026-11-22)
 
 
