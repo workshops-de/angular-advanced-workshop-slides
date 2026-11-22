@@ -21,7 +21,7 @@ examples: [commit-conventions.md](./docs/commit-conventions.md).
 
 ## Sample Solution
 
-The `sample-solution` directory (in the `angular-workshop` repository, added there as a git submodule pointing to `git@github.com:workshops-de/angular-workshop.git`) contains the sample solutions for the lessons' tasks. Each commit in that submodule is the solution to one task.
+The `sample-solution` directory (a git submodule pointing to `git@github.com:workshops-de/angular-advanced-workshop.git`) contains the sample solutions for the lessons' tasks. Each commit in that submodule is the solution to one task.
 
 ## Slidev
 
