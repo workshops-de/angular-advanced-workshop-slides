@@ -1,1 +1,0 @@
-- **Add a fallback URL or validation** when the configuration file is missing or malformed.
