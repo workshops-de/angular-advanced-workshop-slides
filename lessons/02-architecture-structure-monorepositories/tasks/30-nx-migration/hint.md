@@ -1,4 +1,4 @@
-- **[Initialize Nx]** Answer the prompts of `nx init{:bash}` like this: cacheable operations `build,test,lint`, no Nx Cloud, no plugins. Nx detects the Angular CLI workspace and converts it.
+- **Initialize Nx** Answer the prompts of `nx init{:bash}` like this: cacheable operations `build,test,lint`, no Nx Cloud, no plugins. Nx detects the Angular CLI workspace and converts it.
 
 ```bash
 npx nx init
@@ -6,7 +6,7 @@ npx nx init
 
 ---
 
-- **[Read the result]** What you should find:
+- **Read the result** What you should find:
   - `angular.json` is gone. Each app has a `project.json` with its targets.
   - `nx.json` holds `targetDefaults`. `"cache": true` makes a target cacheable.
   - The scripts in `package.json` call `nx build`, `nx test` and so on instead of `ng`.
@@ -24,7 +24,7 @@ npx nx init
 
 ---
 
-- **[Move the apps]** Move one project at a time. The generator moves the files and updates `project.json`.
+- **Move the apps** Move one project at a time. The generator moves the files and updates `project.json`.
 
 ```bash
 npx nx g @nx/workspace:move --projectName=bookmonkey-client --destination=apps/bookmonkey-client
@@ -33,7 +33,7 @@ npx nx g @nx/workspace:move --projectName=rating --destination=apps/rating
 
 ---
 
-- **[Fix the leftover paths]** Replace `projects/` with `apps/` in these places.
+- **Fix the leftover paths** Replace `projects/` with `apps/` in these places.
 
 ```json
 // tsconfig.json
@@ -61,7 +61,7 @@ export default defineConfig(({ mode }) => ({
 
 ---
 
-- **[Check graph and cache]** After the second run the output says `[local cache]` for both tasks and `Cache: 2/2 hit (100%)`.
+- **Check graph and cache** After the second run the output says `[local cache]` for both tasks and `Cache: 2/2 hit (100%)`.
 
 ```bash
 npx nx graph
