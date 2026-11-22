@@ -20,7 +20,7 @@ description: Plans and applies solutions to workshop tasks. Automates the integr
   - if more than one submodule is defined aks which you should use
   - if no `gitmodules` is present, stop and ask for clarification
 - List all solution--Commits (all commits starting with the solution prefix) to help the trainer to choose the correct spot
-  - `git log --oneline solution-next 2>/dev/null | grep "solution--" || git log --oneline --all | grep "solution--"`
+  - `git log --oneline solution 2>/dev/null | grep "solution--" || git log --oneline --all | grep "solution--"`
 - Target commit
   - You need to know what commit should be updated
   - the commit must start with the solution-prefix
