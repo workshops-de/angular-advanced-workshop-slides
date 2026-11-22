@@ -37,7 +37,7 @@
 | Library-Typen und Tag-Modell (`type`, `scope`)                          | fehlt                                                     | **N** vor Task 50                                                                         |
 | Task 50 Boundaries mit Nx (statt `eslint-plugin-boundaries`, E1)        | Sheriff + eslint-plugin-boundaries                        | **E bleibt** (als Alternativen), Fokus wechselt auf Nx, siehe Konflikt K1                 |
 | Grenzen der Werkzeuge (Ausblick Architekturtest Lesson 05)              | fehlt                                                     | **N**                                                                                     |
-| Task 60 Affected + eigene Commands                                      | fehlt                                                     | **N**: Cache, `affected`, `--graph`, `--explain`, `run-commands`, `dependsOn`, `run-many` |
+| Task 60 (jetzt Lesson 08) Affected + eigene Commands                                      | fehlt                                                     | **N**: Cache, `affected`, `--graph`, `--explain`, `run-commands`, `dependsOn`, `run-many` |
 | Brücke zu CI/Governance (Lesson 08)                                     | "CI/CD pipelines" nur als Stichwort                       | **N**                                                                                     |
 | Bonus Task 80 Runtime Configuration                                     | Task + "Promote Artifacts"                                | E, an Nx-Struktur anpassen (Tag statt Boundaries-Update)                                  |
 | Bonus Task 90 Generator                                                 | fehlt                                                     | **N** Bonus-Task-Folie + What-If                                                          |
@@ -205,7 +205,9 @@ Diese Blöcke füllen die `ui`- und `data-access`-Libraries und bereiten Lesson 
 | 73  | Task                    | Enforce Module Boundaries   | Tags, `depConstraints`, den Verstoß aus Task 40 finden; ADR um Tag-Regeln ergänzen                                         | T               |
 | 74  | What If?                | Limits of the Tools         | Nx prüft Projekt gegen Projekt, nicht Dateien, Zyklen, Namen. Ausblick: Architekturtest in Lesson 05                       | N               |
 
-### Teil 9: Affected & Custom Commands (Task 60)
+### Teil 9: Affected & Custom Commands (Task 60, verlegt nach Lesson 08 als Task 10)
+
+> Dieser Teil gehört jetzt zur Lesson Delivery & Governance (`08`). Folien bei Bedarf dorthin verschieben.
 
 | #   | Layout                  | Titel                        | Inhalt                                                                                          | Her. |
 | --- | ----------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------- | ---- |
@@ -214,7 +216,7 @@ Diese Blöcke füllen die `ui`- und `data-access`-Libraries und bereiten Lesson 
 | 77  | What                    | Cache and Affected           | Second run from cache (`targetDefaults`); `nx affected -t lint test build`                      | N    |
 | 78  | How                     | Explaining Affected          | `--graph` shows projects, `--explain` shows why; Vergleich Änderung in `ui` vs. Feature-Library | N    |
 | 79  | Code Window Explanation | A Custom Target              | `nx:run-commands` Target `check` mit `dependsOn` lint + test; `nx run-many -t check`            | N    |
-| 80  | Task                    | Affected and Custom Commands | Task 60                                                                                         | T    |
+| 80  | Task                    | Affected and Custom Commands | Task 60 (jetzt Lesson 08) | T    |
 | 81  | What If?                | Pipeline Bridge              | `nx affected` in CI (Lesson 08); Architekturtests (Lesson 05). Governance                       | N    |
 
 ### Teil 10: Further Topics (Performance, Build & Deploy; Bonus Runtime Configuration)
@@ -269,10 +271,10 @@ Alle 68 Slidev-Folien sind mit **E**, **M** oder **T** wiederzufinden. Zusammeng
 | Teil 6      | 9      | 15 min (Task 40) |
 | Teil 7      | 10     | –                |
 | Teil 8      | 9      | 15 min (Task 50) |
-| Teil 9      | 7      | 15 min (Task 60) |
+| Teil 9      | 7      | 15 min (Task 60, jetzt Lesson 08) |
 | Teile 10-12 | 17     | Bonus 80/90      |
 
-Die Task-Summe von 80 min stammt aus dem Plan und enthält nur Aufgabenzeit, keine Theorie. Die Gesamtdauer der Lesson ergibt sich erst mit der Folienzeit. Kürzungskandidaten (Plan, Risiken): `scope`-Tags, Task 60. Teil 7 und Performance bleiben vollständig (K2), sind aber kompakt erklärt, ohne Task.
+Die Task-Summe von 65 min (ohne den nach Lesson 08 verlegten Task 60) stammt aus dem Plan und enthält nur Aufgabenzeit, keine Theorie. Die Gesamtdauer der Lesson ergibt sich erst mit der Folienzeit. Kürzungskandidaten (Plan, Risiken): `scope`-Tags. Teil 7 und Performance bleiben vollständig (K2), sind aber kompakt erklärt, ohne Task.
 
 ## 7. Nächste Schritte
 

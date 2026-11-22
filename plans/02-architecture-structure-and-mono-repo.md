@@ -41,8 +41,7 @@ Entscheiden → Konvention → sichtbar → physisch → erzwungen → genutzt:
 3. Nx macht sie im Graph sichtbar (30).
 4. Die Libraries machen sie physisch. Am Ende von Task 40 bauen die Teilnehmenden **bewusst einen Verstoß** ein (z. B. `ui` importiert aus `data-access`). Nichts schlägt an, nur `nx graph` zeigt die falsche Kante.
 5. Die Boundaries sind die Antwort auf dieses selbst erzeugte Problem (50). Die Tag-Regeln werden im ADR als Konsequenz nachgetragen.
-6. Affected und eigene Commands nutzen die Struktur (60).
-7. Bonus: Runtime Configuration (80) und ein Generator, der die Struktur automatisiert (90).
+6. Bonus: Runtime Configuration (80) und ein Generator, der die Struktur automatisiert (90).
 
 Der rote Faden: **Entscheidung → Umsetzung → Absicherung.** Der ADR aus Task 10 ist die Quelle, Boundaries (50) sind die Absicherung im Code. Was Nx nicht ausdrücken kann, sichert der Architekturtest in Lesson 05 ab. Er steht dort, weil Teilnehmende ohne Testerfahrung hier sonst überfordert wären.
 
@@ -55,11 +54,10 @@ Der rote Faden: **Entscheidung → Umsetzung → Absicherung.** Der ADR aus Task
 | 30  | Nx Migration                   | neu                                | 15  | `nx init`, Ergebnis lesen (`nx.json`, `project.json`), `nx graph`, erster Cache-Treffer als Appetizer |
 | 40  | Libraries extrahieren          | neu                                | 15  | Feature-Ordner und `data/` werden Libraries (`feature-*`, `data-access`, `ui`). `ui` und `data-access` werden zunächst leer angelegt und in Lesson 03/04 gefüllt. Abschluss: bewusster Verstoß. |
 | 50  | Enforce Module Boundaries      | existiert, **umbauen**             | 15  | Tags und `depConstraints` mit `@nx/enforce-module-boundaries`. Stufe 1: nur `type`. Stufe 2 (oder Bonus): `scope`. ADR um die Regeln ergänzen. |
-| 60  | Affected und eigene Commands   | neu                                | 15  | Cache und `nx affected` (inkl. `--graph`, `--explain`), eigenes Target mit `nx:run-commands`, `dependsOn`, `nx run-many`. Brücke zu CI (Lesson 08). |
 | 80  | Bonus: Runtime Configuration   | existiert (`04-runtime-configuration`), **umbauen**, **Bonus** | 10  | Konfiguration zur Laufzeit statt Build-Zeit (ein Build, mehrere Stages), siehe unten. |
 | 90  | Bonus: Generator für ein Aggregat | neu, **Bonus**                  | 20+ | Eigener Nx-Generator, der eine Library mit Grundstruktur für ein Aggregat erzeugt (siehe unten). |
 
-Summe ohne Bonus: **80 min**. Die Nummer 70 ist frei (dort stand der Architekturtest, jetzt Lesson 05, Task 90). Die Bonus-Nummern 80 und 90 bleiben, damit die Verweise in anderen Plänen stabil sind. Mono vs. Multi Repo und weitere Themen sind reiner Folieninhalt (siehe Abschnitt "Folieninhalte ohne Task") und zählen hier nicht als Task.
+Summe ohne Bonus: **65 min**. Die Nummern 60 und 70 sind frei: 60 (Affected und eigene Commands) ist nach Lesson 08 gewandert, 70 war der Architekturtest (jetzt Lesson 05, Task 90). Die Bonus-Nummern 80 und 90 bleiben, damit die Verweise in anderen Plänen stabil sind. Mono vs. Multi Repo und weitere Themen sind reiner Folieninhalt (siehe Abschnitt "Folieninhalte ohne Task") und zählen hier nicht als Task.
 
 ### Task 10: Architecture Decision Record
 
@@ -71,17 +69,6 @@ Der ADR steht **am Anfang**, damit Entscheidungen im Team abgesichert sind, bevo
 - **Wiederverwendung später:** Task 50 ergänzt die Tag-Regeln als Konsequenz. Task 80 (Bonus) nutzt dieselbe Vorlage für einen ADR zur Runtime Configuration.
 - **Ablageort:** `docs/architecture/decision-records/` (Pfad im bestehenden Task, inkl. Tippfehler `achtitecture` in der Solution, prüfen und vereinheitlichen).
 - **Offen:** Wie "echt" ist die Entscheidung? Entweder gibt der Task die Entscheidung vor und die Teilnehmenden begründen sie, oder sie entscheiden selbst. Zweites ist näher an der Praxis, erste ist besser planbar, weil die Folgetasks Nx voraussetzen.
-
-### Task 60: Affected und eigene Commands
-
-Idee: Zuerst eine Änderung in `ui` machen und mit `nx affected -t test --graph` sehen, welche Projekte betroffen sind. Danach ein eigenes Target anlegen, das die Struktur nutzt.
-
-- Cache: zweiter Lauf von `build` oder `test` kommt aus dem Cache (`targetDefaults` mit `"cache": true`).
-- `nx affected -t lint test build`: Wirkung einer Änderung in `ui` gegenüber einer Änderung in einer Feature-Library.
-- `--explain` zeigt, warum ein Projekt betroffen ist.
-- Eigener Command als Target in `project.json` oder `nx.json`, z. B. `nx:run-commands` für einen Check oder ein Skript. Kandidat: ein Target `check`, das über `dependsOn` Lint und Test bündelt.
-- `nx run-many -t check` über alle Projekte, danach dasselbe nur affected.
-- Offen: Konkretes Beispiel für den eigenen Command festlegen. Er sollte später in der CI (Lesson 08) und beim Architekturtest (Lesson 05) wiederverwendbar sein.
 
 ### Task 80 (Bonus): Runtime Configuration
 
@@ -126,7 +113,7 @@ Diese Themen sind beworbene Inhalte, bekommen aber **keine Aufgabe**. Sie leben 
 | Tool-Überblick: Nx, Bit, Rush, Turborepo | nach Task 30             | Vergleich anhand dessen, was die Teilnehmenden gerade mit Nx erlebt haben (Graph, Cache, Generatoren).                     | Tool-Überblick                         |
 | Library-Typen und Tag-Modell           | vor Task 50                | Konzept `type` (feature → data-access → ui) und `scope`, erlaubte Abhängigkeitsrichtung. Vorbereitung der `depConstraints`. | Architektur (Teil von Mono-Repo-Tools) |
 | Grenzen der Werkzeuge                  | nach Task 50               | Was Nx Boundaries prüft (Projekt gegen Projekt) und was nicht (Dateien, Zyklen, Namen). Ausblick: Der Architekturtest in Lesson 05 schließt diese Lücke. | Architektur, Codeanalyse               |
-| Brücke zu CI und Governance            | nach Task 60               | Ausblick auf Lesson 08: `nx affected` in der Pipeline (Architekturtests siehe Lesson 05).                                                 | CI, CD                                 |
+| Brücke zu Delivery und Governance      | nach Task 50               | Ausblick auf Lesson 08: Affected, eigene Commands und CI nutzen die Struktur (Architekturtests siehe Lesson 05).                         | CI, CD                                 |
 
 Offen: Welche dieser Themen bekommen eine eigene Folie, welche nur eine Sprechernotiz? Die Folien selbst liegen in Google Slides und werden über den Skill `slide-creator` abgesichert.
 
@@ -148,7 +135,7 @@ Vorschlag für das Tag-Modell (zu validieren): zwei Dimensionen, `scope` (welche
 
 - Der ADR (Task 10) steht **vor** allem anderen, weil er die Entscheidungen festhält, die die Folgetasks umsetzen.
 - Project Structure muss **vor** der Nx-Migration stehen, weil die Feature-Ordner später 1:1 zu Libraries werden.
-- Die in diesem Block angelegten Libraries und Tags sind die Grundlage für alle späteren Lessons (UI-Library in 03, `data-access` in 04, Affected in 08).
+- Die in diesem Block angelegten Libraries und Tags sind die Grundlage für alle späteren Lessons (UI-Library in 03, `data-access` in 04, Affected und CI in 08).
 
 ## Offene Fragen
 

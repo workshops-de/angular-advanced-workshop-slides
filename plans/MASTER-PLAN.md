@@ -62,15 +62,15 @@ Jeder Schritt setzt den vorherigen voraus, ist aber über **Checkpoints** (Git-T
 | #   | Lesson                                | Tasks (**fett** = existiert schon, ggf. angepasst)                                                                                         | Min |
 | --- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --- |
 | 01  | Introduction                          | **Preparation**, **Choose your lessons and focus**                                                                                         | 25  |
-| 02  | Architecture: Decisions, Structure & Mono-Repo | **ADR** (nach Folien zu Entscheidungen, Mono vs. Multi Repo) → **Project Structure** → Nx Migration (danach Folien Tool-Überblick) → Libraries extrahieren → **Enforce Module Boundaries** (auf Nx umgebaut) → Affected und eigene Commands → Bonus: **Runtime Configuration** → Bonus: Generator für ein Aggregat | 80  |
+| 02  | Architecture: Decisions, Structure & Mono-Repo | **ADR** (nach Folien zu Entscheidungen, Mono vs. Multi Repo) → **Project Structure** → Nx Migration (danach Folien Tool-Überblick) → Libraries extrahieren → **Enforce Module Boundaries** (auf Nx umgebaut) → Bonus: **Runtime Configuration** → Bonus: Generator für ein Aggregat | 65  |
 | 03  | Component Libraries                   | Autocomplete (Material/CDK) → generische Entity-Auswahl → Host-Directive → Einsatz → Storybook → Browser-Tests (Bonus: Aria, Routed Dialog)   | 110 |
 | 04  | State                                 | Zentral vs. dezentral (neu) → **Signal Store 1–8**                                                                                         | 110 |
 | 05  | Testing                               | **Testbed** (Einstieg) → Vitest-Refactoring (`expect.poll`, `expect.element`) → Vitest Browser Mode → **Testing Library** → **Mock service, Mock components, Http** → Testpyramide und Testbarkeit → Architekturtests (ArchUnitTS, aus 02 verlegt) → E2E (Playwright) | 160 |
 | 06  | *entfallen*, aufgegangen in Lesson 02 (E7)                                                                                                | 0   |
 | 07  | Micro-Frontend                        | Monolith vs. Modulith vs. Micro-Frontend → Remote anbinden → Shared Dependencies                                                           | 45  |
-| 08  | Delivery & Governance                 | CI mit `nx affected` → Codeanalyse → CD → Anti-Patterns finden                                                                             | 50  |
+| 08  | Delivery & Governance                 | Affected und eigene Commands → CI mit `nx affected` → Codeanalyse → CD → Anti-Patterns finden                                            | 65  |
 
-**Summe ca. 580 min, also etwa 9,7 h reine Aufgabenzeit bei 15 h Workshop.** Lesson 05 ist mit 160 min die größte Lesson, Lesson 02 hat 80 min. Die Folienzeit kommt dazu. Kürzungskandidaten stehen in Detailplan 05. Das lässt Reserve für Folien, Diskussion, Pausen und Hänger.
+**Summe ca. 580 min (Lesson 02 und 08 verschieben je 15 min, Summe bleibt), also etwa 9,7 h reine Aufgabenzeit bei 15 h Workshop.** Lesson 05 ist mit 160 min die größte Lesson, Lesson 02 hat 65 min. Die Folienzeit kommt dazu. Kürzungskandidaten stehen in Detailplan 05. Das lässt Reserve für Folien, Diskussion, Pausen und Hänger.
 
 ### Details zu neuen Tasks
 
@@ -81,8 +81,13 @@ Jeder Schritt setzt den vorherigen voraus, ist aber über **Checkpoints** (Git-T
 | Nx Migration        | `nx init`, Ergebnis lesen (`nx.json`, `project.json`), `nx graph`                        | 15  |
 | Libraries           | Feature-Ordner und `data/` zu Libraries machen, Imports anpassen                         | 15  |
 | Module Boundaries   | Tags, `depConstraints`, bewusster Verstoß und Fehlermeldung                              | 15  |
-| Affected und eigene Commands | Cache, `nx affected`, eigenes Target (`nx:run-commands`, `dependsOn`), `nx run-many`, Brücke zu CI | 15  |
 | Bonus: Generator    | Nx-Generator bootstrapt Library für ein Aggregat (routing, client, page, model, Valibot-Schema) | 20+ |
+
+**08 Delivery & Governance**
+
+| Task                | Inhalt                                                                                   | Min |
+| ------------------- | ---------------------------------------------------------------------------------------- | --- |
+| Affected und eigene Commands | Cache, `nx affected`, eigenes Target (`nx:run-commands`, `dependsOn`), `nx run-many`, Brücke zu CI | 15  |
 
 **03 Component Libraries**
 
