@@ -2,6 +2,14 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+## [1.0.1](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.0.0...v1.0.1) (2026-11-22)
+
+
+### Bug Fixes
+
+* update sample-solution submodule reference to point to the correct repository ([d683cc1](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/d683cc1dec8d24a6426d6cc37e8e5329701761ab))
+* update slide count and clarify content handling in existing Google Deck ([8b9c8cc](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/8b9c8ccaef349eff59108dfa1343d87cd7e7b122))
+
 # 1.0.0 (2026-11-22)
 
 
