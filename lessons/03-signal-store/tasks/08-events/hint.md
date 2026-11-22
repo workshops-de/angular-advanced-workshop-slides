@@ -1,6 +1,21 @@
-## eventGroup and event types
+- **Page, route and sidebar** `BooksClient.search(){:ts}` is already prepared. It queries `books?q=...`.
 
-Define events with `eventGroup` and `type`:
+```ts
+// book.routes.ts
+{
+  path: 'search',
+  loadComponent: () => import('./book-search-page/book-search-page').then(c => c.BookSearchPage)
+},
+```
+
+```ts
+// libs/ui/src/lib/sidebar/sidebar.ts
+pageLinks = signal({ /* ... */ booksSearch: '/books/search' });
+```
+
+---
+
+- **Events**
 
 ```ts
 import { type } from '@ngrx/signals';
@@ -9,68 +24,61 @@ import { eventGroup } from '@ngrx/signals/events';
 export const bookSearchEvents = eventGroup({
   source: 'Book Search',
   events: {
-    queryChanged: type<{ query: string }>(),
-    loadedSuccess: type<Book[]>(),
-    loadedFailure: type<string>(),
-  },
+    searchQueryUpdated: type<{ query: string }>(),
+    searchSucceeded: type<Book[]>(),
+    searchFailed: type<string>()
+  }
 });
 ```
 
-## withReducer for state transitions
+---
 
-Use `withReducer` and `on` to map events to state updates:
+- **Store with reducers and event handlers**
 
 ```ts
-import { withReducer } from '@ngrx/signals/events';
-import { on } from '@ngrx/signals/events';
+import { Events, on, withEventHandlers, withReducer } from '@ngrx/signals/events';
 
-withReducer(
-  on(bookSearchEvents.queryChanged, () => ({ isLoading: true })),
-  on(bookSearchEvents.loadedSuccess, ({ payload: books }) => ({ books, isLoading: false })),
-  on(bookSearchEvents.loadedFailure, () => ({ isLoading: false }))
+export const BookSearchStore = signalStore(
+  withState(initialState),
+  withReducer(
+    on(bookSearchEvents.searchQueryUpdated, () => ({ isLoading: true })),
+    on(bookSearchEvents.searchSucceeded, ({ payload: books }) => ({ books, isLoading: false })),
+    on(bookSearchEvents.searchFailed, () => ({ isLoading: false }))
+  ),
+  withEventHandlers((_store, events = inject(Events), booksClient = inject(BooksClient)) => ({
+    search$: events.on(bookSearchEvents.searchQueryUpdated).pipe(
+      switchMap(({ payload }) =>
+        booksClient.search(payload.query).pipe(
+          mapResponse({
+            next: books => bookSearchEvents.searchSucceeded(books),
+            error: (error: Error) => {
+              console.error(error);
+              return bookSearchEvents.searchFailed(error.message);
+            }
+          })
+        )
+      )
+    )
+  }))
 );
 ```
 
-## withEventHandlers and mapResponse
+---
 
-Listen to events, call the API, and map results to success/failure events:
-
-```ts
-import { Events, withEventHandlers } from '@ngrx/signals/events';
-import { mapResponse } from '@ngrx/operators';
-import { inject } from '@angular/core';
-import { debounceTime, switchMap } from 'rxjs';
-
-withEventHandlers((store, events = inject(Events), client = inject(BookApiClient)) => ({
-  loadBooks$: events.on(bookSearchEvents.queryChanged).pipe(
-    debounceTime(300),
-    switchMap(({ payload }) =>
-      client.getBooks(10, payload.query).pipe(
-        mapResponse({
-          next: books => bookSearchEvents.loadedSuccess(books),
-          error: err => {
-            console.error(err);
-            return bookSearchEvents.loadedFailure(err.message);
-          },
-        })
-      )
-    ),
-  ),
-})),
-```
-
-## Dispatching from the component
-
-Use `injectDispatch` to dispatch events:
+- **Dispatch from the page**
 
 ```ts
-import { injectDispatch } from '@ngrx/signals/events';
+@Component({ /* ... */ providers: [BookSearchStore] })
+export class BookSearchPage {
+  protected readonly store = inject(BookSearchStore);
+  private readonly dispatch = injectDispatch(bookSearchEvents);
 
-private readonly dispatch = injectDispatch(bookSearchEvents);
-
-onSearchInput(query: string) {
-  this.dispatch.queryChanged({ query });
+  protected search(query: string) {
+    this.dispatch.searchQueryUpdated({ query });
+  }
 }
 ```
 
-See [NgRx Signal Store — Events](https://ngrx.io/guide/signals/signal-store/events).
+```html
+<input class="search-field" type="search" (input)="search($event.target.value)" />
+```

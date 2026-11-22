@@ -1,48 +1,68 @@
-## withEntities and entity helpers
-
-Import `withEntities`, `setEntities`, and `removeEntity` from `@ngrx/signals/entities`. Replace `withState` with `withEntities<Book>`:
+- **Entity config and `withEntities`** With `collection: 'book'{:ts}` the store gets `bookEntities`, `bookEntityMap` and `bookIds`.
 
 ```ts
-import { withEntities, setEntities, removeEntity } from '@ngrx/signals/entities';
+import { type } from '@ngrx/signals';
+import { entityConfig, removeEntity, setAllEntities, withEntities } from '@ngrx/signals/entities';
 
-const selectId = (book: Book) => book.isbn;
+const bookConfig = entityConfig({
+  entity: type<Book>(),
+  collection: 'book',
+  selectId: (book: Book) => book.isbn
+});
 
-withEntities<Book>(),
+signalStoreFeature(
+  withImmutableState(initialState), // without books
+  withEntities(bookConfig)
+  // ...
+);
 ```
 
 See [NgRx Signal Store — Entity Management](https://ngrx.io/guide/signals/signal-store/entity-management).
 
-## loadBooks with setEntities
+---
 
-Use `setEntities` in the success callback of `tapResponse`:
+- **`loadBooks` and `currentBook`**
 
 ```ts
-import { setEntities } from '@ngrx/signals/entities';
-
-next: books => patchState(store, setEntities(books, { selectId })),
+next: books => patchState(store, setAllEntities(books, bookConfig), { isLoading: false }),
 ```
 
-## removeBook with removeEntity
+```ts
+currentBook: computed(() => {
+  const isbn = store.selectedIsbn();
+  return isbn ? store.bookEntityMap()[isbn] : undefined;
+}),
+```
+
+---
+
+- **`removeBook`**
 
 ```ts
-import { removeEntity } from '@ngrx/signals/entities';
-
-withMethods((store, router = inject(Router), bookApiClient = inject(BookApiClient)) => ({
-  // ...
-  removeBook: rxMethod<{ bookISBN: string }>(
-    pipe(
-      switchMap(({ bookISBN }) =>
-        bookApiClient.delete(bookISBN).pipe(
-          tapResponse({
-            next: () => {
-              patchState(store, removeEntity(bookISBN));
-              router.navigateByUrl('/');
-            },
-            error: err => console.error(err),
-          })
-        )
+removeBook: rxMethod<string>(
+  pipe(
+    concatMap(isbn =>
+      booksClient.delete(isbn).pipe(
+        tapResponse({
+          next: () => patchState(store, removeEntity(isbn, bookConfig)),
+          error: () => undefined
+        })
       )
     )
-  ),
-})),
+  )
+)
 ```
+
+```ts
+// books-page.ts
+deleteBook(book: Book) {
+  if (!window.confirm(`Delete "${book.title}"?`)) {
+    return;
+  }
+  this.store.removeBook(book.isbn);
+}
+```
+
+---
+
+- **Update the page** `const books = this.store.bookEntities();`

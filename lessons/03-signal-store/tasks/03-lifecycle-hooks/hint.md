@@ -1,20 +1,20 @@
-## withHooks and onInit
-
-`withHooks` provides lifecycle hooks for the store. The `onInit` callback runs when the store is first created (e.g. when first injected). Use it to trigger initial data loading:
+- **Add `withHooks`** The hook receives the store, so all methods are available.
 
 ```ts
 import { withHooks } from '@ngrx/signals';
 
-// Add to signalStore() after withMethods:
-withHooks({
-  onInit(store) {
-    store.loadBooks();
-  },
-});
+export const BookStore = signalStore(
+  { providedIn: 'root' },
+  withState(initialState),
+  withMethods(/* ... */),
+  withHooks({
+    onInit(store) {
+      store.loadBooks();
+    }
+  })
+);
 ```
 
-See [NgRx Signal Store — Lifecycle Hooks](https://ngrx.io/guide/signals/signal-store/lifecycle-hooks).
+---
 
-## Simplifying the component
-
-Remove `implements OnInit`, `ngOnInit()`, and any call to `store.loadBooks()` from the component. The store handles initialization on first use.
+- **Clean up the page** Delete the `OnInit{:ts}` interface, the `ngOnInit(){:ts}` method and its import. Injecting the store is enough.

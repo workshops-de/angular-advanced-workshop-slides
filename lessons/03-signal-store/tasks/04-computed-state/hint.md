@@ -1,31 +1,49 @@
-## withComputed and bookByIdParam
-
-`withComputed` defines derived state from existing store signals. Use `computed` from Angular to react to `books()` and `currentBookId()`:
+- **Extend the state and add the computed**
 
 ```ts
-import { withComputed } from '@ngrx/signals';
 import { computed } from '@angular/core';
+import { withComputed } from '@ngrx/signals';
 
+withState(initialState), // selectedIsbn: null
 withComputed(store => ({
-  bookByIdParam: computed(() =>
-    store.books().find(book => book.id === store.currentBookId()) ?? undefined
-  ),
+  currentBook: computed(() => store.books().find(book => book.isbn === store.selectedIsbn()))
 })),
 ```
 
-## Syncing route param in the component
+---
 
-Use an `effect` to write the route `id` into the store whenever it changes. `bookByIdParam` will update reactively:
+- **Add `selectBook`**
 
 ```ts
-id = input('id');
-protected book = this.store.bookByIdParam;
+withMethods((store, booksClient = inject(BooksClient)) => ({
+  selectBook: (isbn: string | null) => patchState(store, { selectedIsbn: isbn }),
+  // loadBooks ...
+}))
+```
 
-constructor() {
-  effect(() => this.store.setCurrentBookId(this.id()));
+---
+
+- **Refactor the detail page**
+
+```ts
+export class BookDetailPage {
+  private readonly store = inject(BookStore);
+
+  readonly isbn = input('');
+
+  protected readonly book = this.store.currentBook;
+  protected readonly isLoading = this.store.isLoading;
+
+  constructor() {
+    effect(() => this.store.selectBook(this.isbn()));
+  }
 }
 ```
 
-Ensure `setCurrentBookId` runs when the component is created and when `id` changes. The store remains the single source of truth for the selected book.
-
-See [NgRx Signal Store](https://ngrx.io/guide/signals/signal-store) for store methods and properties.
+```html
+@if (isLoading()) {
+<p>Loading book...</p>
+} @else if (book(); as book) {
+<app-book-detail [book]="book" />
+}
+```

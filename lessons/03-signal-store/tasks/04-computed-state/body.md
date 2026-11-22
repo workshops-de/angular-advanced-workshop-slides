@@ -1,18 +1,11 @@
-Add a computed `currentBook` to the `BookStore` that derives the current book from the route param, and refactor `book-detail` to use it. The store owns `actualBookDetailISBN`; the component syncs the route `id` into the store via an `effect`.
+Show the book detail page from the store. A computed `currentBook{:ts}` finds the book that belongs to the route ISBN, so the page needs no own request.
 
-- **Extend store state and add computed** In `book-store.ts`, add `actualBookDetailISBN: string | null` to `BookStoreState` (initial: `null`). Import `withComputed` from `@ngrx/signals` and `computed` from `@angular/core`. Add `withComputed` with a `currentBook` signal that finds the book whose `id` equals `store.actualBookDetailISBN()`.
-  ```ts
-  withComputed(store => ({
-    currentBook: computed(() =>
-      store.books().find(book => book.id === store.actualBookDetailISBN()) ?? undefined
-    ),
-  })),
-  ```
+- **Extend the state and add the computed** Add `selectedIsbn: string | null{:ts}` (start: `null{:ts}`). Add `withComputed{:ts}` with `currentBook{:ts}`, which looks up the selected book in `books{:ts}`.
 
 ---
 
-- **Add `setCurrentBookISBN` method** In `withMethods`, add `setCurrentBookISBN: (bookISBN: string | null) => patchState(store, { actualBookDetailISBN: bookISBN })`.
+- **Add `selectBook`** Add a method to `withMethods{:ts}` that writes the ISBN into `selectedIsbn{:ts}` with `patchState{:ts}`.
 
 ---
 
-- **Refactor `book-detail` to use computed state** In `book-detail.component.ts`, use `input('id')` for the route param. Expose `book = this.store.currentBook` and `isLoading = this.store.isLoading` from the injected store. Add an `effect` in the constructor that calls `this.store.setCurrentBookISBN(this.id())` when `id` changes, so the store stays in sync with the route.
+- **Refactor the detail page** In `BookDetailPage{:ts}` remove the resource. Expose `book = store.currentBook{:ts}` and `isLoading = store.isLoading{:ts}`. An `effect{:ts}` in the constructor calls `store.selectBook(this.isbn()){:ts}` whenever the route param changes. Render `book()` in the template.

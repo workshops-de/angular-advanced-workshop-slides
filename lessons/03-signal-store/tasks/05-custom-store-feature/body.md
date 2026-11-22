@@ -1,20 +1,11 @@
-Extract the Books store logic into a reusable custom feature using `signalStoreFeature`. The main store file becomes a thin wrapper; the plugin holds all state, computed, methods, and hooks.
+Extract the store logic into a reusable feature with `signalStoreFeature{:ts}`. `book-store.ts` becomes a thin wrapper.
 
-- **Create the plugin file** Add `src/app/books/state/plugins/with-books.ts`. Import `signalStoreFeature` from `@ngrx/signals` and define a `withBooks()` function that returns the result of `signalStoreFeature`.
-
-  ```ts
-  import { signalStoreFeature } from '@ngrx/signals';
-
-  export function withBooks() {
-    return signalStoreFeature();
-    // ... move all store logic here
-  }
-  ```
+- **Create the feature** Add `libs/feature-books/src/lib/state/plugins/with-books.ts` with a `withBooks(){:ts}` function that returns `signalStoreFeature{:ts}`.
 
 ---
 
-- **Move store logic into the plugin** Inside `withBooks()`, move the full store configuration: `withState`, `withComputed`, `withMethods`, and `withHooks`. Transfer all related imports (e.g. `Book`, `BookApiClient`, `patchState`, `rxMethod`, `computed`, etc.) into the plugin file. Export `withBooks`.
+- **Move the logic** Move state, computed, methods and hooks into `withBooks(){:ts}` together with their imports.
 
 ---
 
-- **Simplify the main store** In `book-store.ts`, remove the moved logic and reduce it to `signalStore(withBooks())`. Keep only the imports required for the main store. Ensure the public API (signals and methods) remains unchanged so existing components continue to work.
+- **Simplify the store** Reduce `BookStore{:ts}` to `signalStore({ providedIn: 'root' }, withBooks()){:ts}`. Components keep working without changes.

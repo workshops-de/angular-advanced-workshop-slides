@@ -1,35 +1,49 @@
-## loadBooks with rxMethod and tapResponse
-
-Use `withMethods`, `rxMethod`, and `patchState` from `@ngrx/signals`. Install `@ngrx/operators` for `tapResponse`, which is recommended for handling API calls:
-
-```bash
-npm install @ngrx/operators
-```
+- **Extend the state and add `loadBooks`** `rxMethod{:ts}` turns a stream pipeline into a method. `tapResponse{:ts}` handles the result without ending the stream on errors.
 
 ```ts
-import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, tap, switchMap } from 'rxjs';
-import { tapResponse } from '@ngrx/operators';
 import { inject } from '@angular/core';
+import { tapResponse } from '@ngrx/operators';
+import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { pipe, switchMap, tap } from 'rxjs';
 
-// ... in withMethods:
-withMethods((store, client = inject(BookApiClient)) => ({
-  loadBooks: rxMethod<{ pageSize: number; searchTerm: string }>(
-    pipe(
-      tap(() => patchState(store, { isLoading: true })),
-      switchMap(props => client.getBooks(props.pageSize, props.searchTerm)),
-      tapResponse({
-        next: books => patchState(store, { books, isLoading: false }),
-        error: () => patchState(store, { isLoading: false }),
-      })
+export const BookStore = signalStore(
+  { providedIn: 'root' },
+  withState(initialState),
+  withMethods((store, booksClient = inject(BooksClient)) => ({
+    loadBooks: rxMethod<void>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true })),
+        switchMap(() =>
+          booksClient.list().pipe(
+            tapResponse({
+              next: books => patchState(store, { books, isLoading: false }),
+              error: () => patchState(store, { isLoading: false })
+            })
+          )
+        )
+      )
     )
-  ),
-})),
+  }))
+);
 ```
 
-See [NgRx Signals — RxJS Integration](https://ngrx.io/guide/signals/rxjs-integration) and [NgRx Operators — tapResponse](https://ngrx.io/guide/operators/operators).
+---
 
-## Calling loadBooks from the component
+- **Trigger loading from the page**
 
-In `ngOnInit()`, call `this.bookStore.loadBooks({ pageSize: 10, searchTerm: '' })` (or with values from your component). Expose the store’s `isLoading()` signal in the template for loading UI.
+```ts
+export class BooksPage implements OnInit {
+  store = inject(BookStore);
+
+  ngOnInit() {
+    this.store.loadBooks();
+  }
+}
+```
+
+```html
+@if (store.isLoading()) {
+<p>Loading books...</p>
+}
+```

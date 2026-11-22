@@ -1,20 +1,20 @@
-Add a Book Search page using the NgRx Signal Store Events plugin: define events, build a store with reducers and event handlers, and dispatch from the view. Follow a Redux-style flow: the view dispatches events, the store updates state and triggers side effects.
+So far the components called store methods. The Events plugin works like Redux: a view dispatches an event, reducers update the state, event handlers run side effects. You build a Book Search page with it.
 
-- **Create the Book Search page and route** Add a `book-search` route and component. The page shows a search input and displays books matching the query.
-
----
-
-- **Define event groups** Create `book-search.events.ts` and define `bookSearchEvents` with `eventGroup` from `@ngrx/signals/events`:
-  - `searchQueryUpdated`: payload `{ query: string }` — fired when the user types in the search input
-  - `searchSucceeded`: payload `Book[]` — API returned books
-  - `searchFailed`: payload `Error` (or `string`) — API failed
+- **Create the page and route** Add `BookSearchPage{:ts}` in `libs/feature-books/src/lib/book-search-page/` and register it as lazy route `search{:ts}`. Add a link to the sidebar. The page has a search input and a book grid.
 
 ---
 
-- **Build BookSearchStore with reducers and event handlers** Create `book-search.store.ts` using `withReducer` and `withEventHandlers`:
-  - **Reducers** (`withReducer` + `on`): handle `searchQueryUpdated` → set `isLoading: true`; handle `searchSucceeded` → update `books` and set `isLoading: false`; handle `searchFailed` → set `isLoading: false` and log to console
-  - **Event handler** (`withEventHandlers`): listen to `searchQueryUpdated`, call `BookApiClient.getBooks()` (or search method), use `mapResponse` from `@ngrx/operators` to dispatch `searchSucceeded` on success and `searchFailed` on error; in the error path, call `console.error` before dispatching
+- **Define the events** Create `book-search.events.ts` with `eventGroup{:ts}` from `@ngrx/signals/events`:
+  - `searchQueryUpdated{:ts}` with `{ query: string }{:ts}`
+  - `searchSucceeded{:ts}` with `Book[]{:ts}`
+  - `searchFailed{:ts}` with `string{:ts}`
 
 ---
 
-- **Dispatch from the Book Search component** In the search component, inject the store and use `injectDispatch(bookSearchEvents)` to get the dispatcher. On input (e.g. `(input)` or `(search)`) or via a debounced control, dispatch `searchQueryUpdated({ query })`. Bind the store’s `books` and `isLoading` signals to the template.
+- **Build `BookSearchStore`** Create `book-search.store.ts` with state `books{:ts}` and `isLoading{:ts}`.
+  - `withReducer{:ts}`: the query sets `isLoading: true{:ts}`, success stores the books, failure resets `isLoading{:ts}`
+  - `withEventHandlers{:ts}`: listen to `searchQueryUpdated{:ts}`, call `BooksClient.search(){:ts}` and map the result with `mapResponse{:ts}` to `searchSucceeded{:ts}` or `searchFailed{:ts}`. Log errors with `console.error{:ts}`.
+
+---
+
+- **Dispatch from the page** Provide the store in the page, create the dispatcher with `injectDispatch(bookSearchEvents){:ts}` and call `searchQueryUpdated({ query }){:ts}` on every `input` event. Bind `store.books(){:ts}` and `store.isLoading(){:ts}` in the template.

@@ -1,18 +1,11 @@
-Extend the `BookStore` with RxJS-based loading: add `isLoading` state, implement a `loadBooks` method with `rxMethod`, and call it from `book-list`. Use the existing `BookApiClient` (not an HTTP resource) for fetching data.
+Load the books into the store with an RxJS stream. `BooksClient` already has a `list(){:ts}` method that returns an Observable.
 
-- **Extend store state** Add `isLoading: boolean` to `BookStoreState` and set it to `false` in the initial state.
-  ```ts
-  type BookStoreState = { books: Book[]; isLoading: boolean };
-  const initialState = { books: [], isLoading: false };
-  ```
+- **Extend the state** Add `isLoading{:ts}` to the state. It starts with `false{:ts}`.
 
 ---
 
-- **Add `loadBooks` method with `rxMethod`** Import `withMethods`, `rxMethod`, and `patchState` from `@ngrx/signals`. Import `pipe`, `switchMap`, use `tapResponse` from `@ngrx/operators` for API calls. Extend the store with `withMethods` and implement `loadBooks` that accepts `{ pageSize: number; searchTerm: string }`, manages `isLoading`, and fetches via `BookApiClient.getBooks()`.
-  - Set `isLoading: true` when the request starts
-  - Use `switchMap` to call the API
-  - On success or error, set `isLoading: false` and update `books` on success
+- **Add `loadBooks`** Extend the store with `withMethods{:ts}` and a `loadBooks{:ts}` method built with `rxMethod{:ts}`. Set `isLoading{:ts}` to `true{:ts}`, call `BooksClient.list(){:ts}` in a `switchMap{:ts}`, and handle result and error with `tapResponse{:ts}` from `@ngrx/operators`.
 
 ---
 
-- **Trigger loading from `book-list`** Implement `OnInit` in `book-list.component.ts`, inject the store, and call `store.loadBooks({ pageSize, searchTerm })` in `ngOnInit()`. Replace any `booksResource.isLoading()` usage with the store’s `isLoading()` signal in the template.
+- **Trigger loading from the page** Implement `OnInit{:ts}` in `BooksPage{:ts}` and call `store.loadBooks(){:ts}`. Remove the resource and show the loading text with `store.isLoading(){:ts}`. After a book was deleted, call `store.loadBooks(){:ts}` instead of `reload(){:ts}`.

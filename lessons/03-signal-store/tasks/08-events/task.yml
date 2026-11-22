@@ -4,4 +4,4 @@ category: Signal Store
 preparation: false
 estimated_time_in_minutes: 20
 always_unlocked: false
-git_tag_completed: solve--signal-store-events-redux-architecture
+git_tag_completed: solution--signal-store-events

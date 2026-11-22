@@ -1,18 +1,9 @@
-Set up NgRx Signal Store for the Books feature: install the package, create the store, and wire it into `book-list` so the template uses the store’s signal instead of the old resource.
+Create the first NgRx Signal Store for the books feature and let the books page read its list from the store. `@ngrx/signals` is already installed.
 
-- **Install `@ngrx/signals`** Add the package via npm.
-  ```bash
-  npm install @ngrx/signals
-  ```
+- **Create the store** Add `libs/feature-books/src/lib/state/book-store.ts`. Define a state type with a `books{:ts}` array that starts empty and create `BookStore{:ts}` with `signalStore{:ts}` and `withState{:ts}`. Provide it in root.
 
 ---
 
-- **Create the store file** Add `src/app/books/state/book-store.ts` and define a `BookStoreState` interface with a `books: Book[]` array. Set the initial state to an empty array.
-  - Import `signalStore` and `withState` from `@ngrx/signals`
-  - Create `BookStore` using `signalStore(withState(initialState))`
+- **Use the store in the books page** Inject `BookStore{:ts}` in `BooksPage{:ts}` and build the filtered list from `store.books(){:ts}` instead of the resource.
 
----
-
-- **Wire the store into `book-list`** Import and inject `BookStore` in `book-list.component.ts`. In the template, replace the `@for` loop source with the store’s `books` signal (e.g. `books()` from the injected store).
-
-> **Note:** The app will not work fully yet because the store is empty. The next tasks will load data and restore behavior.
+> **Note:** The list stays empty for now because nothing fills the store. The next tasks load the data.
