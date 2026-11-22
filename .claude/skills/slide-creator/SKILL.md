@@ -93,6 +93,10 @@ google_slide_id: 1fCXthDv9hMFrTPhfDUAkKd3BgmNsiVe_eOwgSkhsU30
 | What If?        | Weckt Neugier auf kommende Fragen/Themen (Edgecases, Transfer)                               |
 | Lessons Learned | Fasst zusammen, was im Abschnitt gelernt wurde                                               |
 
+Die Layout-IDs für `createSlide` stehen in
+[references/layouts.md](references/layouts.md) — dort nachschlagen statt IDs
+zu raten.
+
 Für Code-Beispiele gilt stattdessen das eigene Layout "Code Window" (siehe
 Abschnitt weiter unten).
 
