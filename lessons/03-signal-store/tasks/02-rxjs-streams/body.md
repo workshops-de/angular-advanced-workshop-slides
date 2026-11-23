@@ -1,4 +1,8 @@
-Load the books into the store with an RxJS stream. `BooksClient` already has a `list(){:ts}` method that returns an Observable.
+Load the books into the store with an RxJS stream. `BooksClient` gets a `list(){:ts}` method that returns an Observable.
+
+- **Add `list` to `BooksClient`** Create a `list(){:ts}` method that calls `http.get{:ts}` on the static endpoint `http://localhost:4730/books` with the paging and sorting params, and validate the response with `v.parse(BooksCollectionSchema, books){:ts}` in `map{:ts}`.
+
+---
 
 - **Extend the state** Add `isLoading{:ts}` to the state. It starts with `false{:ts}`.
 

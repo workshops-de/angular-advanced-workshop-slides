@@ -1,3 +1,19 @@
+- **Add `list` to `BooksClient`** A plain `http.get{:ts}` against a static URL is enough. No runtime config is needed.
+
+```ts
+const BOOKS_API_URL = 'http://localhost:4730';
+
+list(): Observable<Book[]> {
+  return this.http
+    .get<unknown>(`${BOOKS_API_URL}/books`, {
+      params: { _start: 0, _end: 15, _sort: 'createdAt', _order: 'desc' }
+    })
+    .pipe(map(books => v.parse(BooksCollectionSchema, books)));
+}
+```
+
+---
+
 - **Extend the state and add `loadBooks`** `rxMethod{:ts}` turns a stream pipeline into a method. `tapResponse{:ts}` handles the result without ending the stream on errors.
 
 ```ts
