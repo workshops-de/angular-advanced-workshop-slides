@@ -2,6 +2,13 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+# [1.4.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.3.1...v1.4.0) (2026-11-23)
+
+
+### Features
+
+* enhance BooksClient with list method and update hint for loading books ([e6f2e15](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/e6f2e153fdb4c1d5270fc59dde5c0ee8a4712d9e))
+
 ## [1.3.1](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.3.0...v1.3.1) (2026-11-23)
 
 
