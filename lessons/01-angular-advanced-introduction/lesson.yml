@@ -1,8 +1,9 @@
 name: Angular Advanced Introduction
 position: 1
-trainer: "gregor@entwicklungszeit.dev"
+trainer: 'gregor@entwicklungszeit.dev'
 slides_type: google_slides
 github_code_url: https://github.com/workshops-de/angular-advanced-workshop
+google_slide_id: 1v2mnUD_GDBo23ezxgur-IAiuPxjmiNfByGCvUxBURwk
 pdf_generation_enabled: true
 stackblitz_enabled: false
 codesandbox_enabled: false
