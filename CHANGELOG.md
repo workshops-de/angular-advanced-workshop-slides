@@ -2,6 +2,13 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+## [1.3.1](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.3.0...v1.3.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* correct trainer email format and ensure google_slide_id is included ([0698910](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/0698910b27be8a3b278a0784e6ee74ba237587fc))
+
 # [1.3.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.2.0...v1.3.0) (2026-11-22)
 
 
