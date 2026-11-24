@@ -207,8 +207,13 @@ def highlight(code_nl, known_types=None, language="auto"):
         _scan_html(text, style, allowed, mark)
     else:
         # comments (// to end of physical line, i.e. until \x0b or end)
-        for m in re.finditer(r'//[^\x0b]*', text):
-            mark(m.start(), m.end(), "COMMENT")
+        # strings first, so `//` inside a URL string is not a comment
+        for m in STRING_RE.finditer(text):
+            mark(m.start(), m.end(), "STRING")
+        for i in range(len(text) - 1):
+            if text[i:i + 2] == "//" and style[i] is None:
+                j = text.find("\x0b", i)
+                mark(i, len(text) if j == -1 else j, "COMMENT")
 
     # strings (single, double, backtick) - not touching already-marked spans.
     # Scanned per allowed run, so an apostrophe in HTML prose can't open a string.
