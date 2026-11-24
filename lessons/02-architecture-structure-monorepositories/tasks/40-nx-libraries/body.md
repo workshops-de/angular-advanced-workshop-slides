@@ -25,7 +25,7 @@ Split the code of `bookmonkey-client` into libraries. Two npm scripts do the rep
 
 ---
 
-- **Check the public API** Open the `src/index.ts` of each library. Find out why `NotificationHost` is not exported.
+- **Check the public API** Open the `src/public-api.ts` of each library. Find out why `NotificationHost` is not exported.
 
 ---
 
