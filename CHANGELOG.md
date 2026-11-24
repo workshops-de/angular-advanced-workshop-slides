@@ -2,6 +2,14 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+# [1.6.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.5.0...v1.6.0) (2026-11-24)
+
+
+### Features
+
+* add HTTP mocking tasks and update testing lessons with Angular Testing Library ([fe7809a](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/fe7809a7950c9bba9a3521d8e99ed124fb812a99))
+* add Lesson 05: Testing, Recherche und Referenzmaterial ([706576a](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/706576ac056963a0dc251c955e870bdf808b09fd))
+
 # [1.5.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.4.0...v1.5.0) (2026-11-24)
 
 
