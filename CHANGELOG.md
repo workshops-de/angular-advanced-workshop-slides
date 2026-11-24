@@ -2,6 +2,20 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+# [1.5.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.4.0...v1.5.0) (2026-11-24)
+
+
+### Bug Fixes
+
+* update public API reference to correct file path for library exports ([91c00f9](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/91c00f9ec29692f2d95721c15c5d93e807a0f57a))
+
+
+### Features
+
+* add module boundaries task with linting rules and tag configuration ([0d75e74](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/0d75e748471393859de86b5b28aa87e5bd43ad21))
+* add task list for testing exercises and clarify test stages ([2eb524f](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/2eb524f99cfff66fba8e3aebd6d3d2832cc6d46f))
+* update testing lesson to replace Testing Library with Vitest locators and enhance test stages ([cb96966](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/cb969668f1aa8a35474d6b5081270622a0a9f0ca))
+
 # [1.4.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.3.1...v1.4.0) (2026-11-23)
 
 
