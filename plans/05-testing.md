@@ -77,6 +77,11 @@ Die Ordnernamen der bestehenden Tasks ändern sich mit der Nummerierung. Die Sol
 - Nichts voraussetzen (`describe`, `it`, `beforeEach`, `expect` kurz erklären). Befehle mit `nx test <projekt>`.
 - Die bestehende `BookCard`-Spec nutzt Testing Library und wird durch diese Fassung ersetzt.
 
+### Task 30: Browser Mode verstehen (Hinweis für die Folien)
+
+- Die Solution schreibt den Test bewusst **inline** (`renderBookCard()` mit `page.elementLocator`, `getByRole`, `expect.element`). Eine Abstraktion wäre hier zu früh.
+- **Folie, kein Task:** Danach kann gezeigt werden, wie man die Locators in eine kleine Tester-Klasse auslagert (`BookCardTester` mit `fixture`, `root = page.elementLocator(...)`, `title`, `author`). Muster aus [Ninja Squad](https://blog.ninja-squad.com/2025/11/18/angular-tests-with-vitest-browser-mode). Die Testabstraktion bleibt damit Folie und wird nicht Teil der Aufgabe (siehe Entscheidung "Testabstraktionen").
+
 ### Task 40: Suche
 
 - `BooksPage` filtert per `bookMatches` und markiert den Treffer per `appBookMarker`. Der Test: Suchbegriff eingeben, nur passende Karten bleiben, Titel per `getByRole('heading', { level: 3 })` prüfen.

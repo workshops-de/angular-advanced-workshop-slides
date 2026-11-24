@@ -1,7 +1,7 @@
-title: Mock service
-position: 30
+title: E2E
+position: 90
 category: General
 preparation: false
 estimated_time_in_minutes: 20
 always_unlocked: false
-git_tag_completed: solution--test-mock-service
+git_tag_completed: solution--testing-e2e

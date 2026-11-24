@@ -1,22 +1,22 @@
-Angular ships with **Vitest** as its default test runner (since Angular v21) — no extra setup needed for this project. Run the existing test suite once to see it in action:
+Angular ships with **Vitest** as test runner. Every building block can be tested in isolation. Let's test the `BookCard{:ts}` component (`libs/feature-books/src/lib/book-card/book-card.ts`) the "vanilla" way, directly through `TestBed{:ts}`.
 
-```sh
-npm test
-```
-
-You should see one passing test coming from `books-page.spec.ts`.
+The existing `book-card.spec.ts` uses another library. Leave it as it is and write your test into a new file. The next tasks will improve this test step by step, so keep it plain for now.
 
 ---
 
-Every 1st-class Angular building block can be **unit tested** in isolation. Let's write a test the "vanilla" way — directly through `TestBed{:ts}` — for `BookCard{:ts}` (`src/app/books/book-card/book-card.ts`). We'll upgrade it to Angular Testing Library in the next task, so keep it plain for now.
+- **Create the spec file** `libs/feature-books/src/lib/book-card/book-card.template.spec.ts` with a `describe('BookCard template', ...){:ts}` block and a small test `Book{:ts}` object.
 
-- **Create the spec file** `src/app/books/book-card/book-card.spec.ts`.
-- **Write a `describe('BookCard', ...){:ts}`-block**. Inside a `beforeEach(){:ts}`:
-  - Call `TestBed.configureTestingModule({}){:ts}`.
+---
+
+- **Create the component** in a `beforeEach(){:ts}`:
+  - Configure the `TestBed{:ts}`. `BookCard{:ts}` needs the `BookMarkerStore{:ts}`, so list it as provider.
   - Create the fixture with `TestBed.createComponent(BookCard){:ts}`.
-  - Define a small test `Book{:ts}`-object and set it via `fixture.componentRef.setInput('book', book){:ts}` — `book{:ts}` is a `required{:ts}` Input, so it must be set before the first `detectChanges(){:ts}`.
-  - Call `fixture.detectChanges(){:ts}`.
-- **Write an `it('should display the book title', ...){:ts}`**: query `fixture.nativeElement.querySelector('h3'){:ts}` and assert its `textContent{:ts}` contains your test book's title with `expect(...).toContain(...){:ts}`.
-- **Write a second `it('should display the book author', ...){:ts}`**: query the `<h4>{:html}` element and assert its `textContent{:ts}` contains your test book's `author{:ts}`.
+  - Set the required input with `fixture.componentRef.setInput('book', book){:ts}`.
+  - Render the template with `fixture.detectChanges(){:ts}`.
 
-Run `npm test{:bash}` — both cases should turn green.
+---
+
+- **Test the title** `it('should display the book title', ...){:ts}`: query the `<h3>{:html}` with `querySelector{:ts}` and assert that its `textContent{:ts}` contains the title.
+- **Test the author** `it('should display the book author', ...){:ts}`: same for the `<h4>{:html}`.
+
+Run `npx nx test feature-books{:bash}`. Both tests must turn green.
