@@ -338,6 +338,35 @@ Anforderungen an die Folie:
 - Hinweis: Die Matcher von `expect.element` stammen aus `@testing-library/jest-dom`. Das Paket bleibt also als Abhängigkeit, aber ohne Testing-Library-Queries.
 - Offen: Die `BookCard`-Spec im `sample-solution` nutzt aktuell `@testing-library/angular` (`render`, `screen`). Sie muss für diesen Task umgeschrieben werden (nicht jetzt, erst nach Freigabe des Plans).
 
+## Aufgabenliste für die Test-Tasks (Gregor, 2026-11-24)
+
+Gregors Liste der Tasks, die geschrieben werden müssen. Ergänzt um den Shallow-Test (Vorschlag, von Gregor bestätigt) und einen Bonus.
+
+| Nr. | Task | Stufe | Inhalt | Zuordnung |
+| --- | ---- | ----- | ------ | --------- |
+| 1 | Test für den Service (`BooksClient`) | Unit (HTTP als Außengrenze gemockt) | Mit `HttpTestingController`. **Zwei Tests:** (a) Bücher werden geladen, (b) es wird ein Fehler geworfen, wenn die Antwort nicht dem Schema entspricht | Task 50 |
+| 2 | Test für die Navigation | Integration | Klick auf eine Buchkarte navigiert zur Detailseite. Interaktion: Klick. Werkzeug: `RouterTestHarness` | Task 70 |
+| 3 | Test für die Suche | Browser Mode, Locators | DOM-Query und Interaktion mit dem Input, Assertions mit `expect.element`. **Danach den Testreport öffnen und die Coverage ansehen** | Task 40 |
+| 4 | Shallow-Test für `BooksPage` | Shallow | `BookCard` gegen `BookCardMock` ersetzen (Vorlage existiert im `sample-solution`) | Task 60 |
+| Bonus A | Bereich mit geringer Testabdeckung suchen und eigenen Test schreiben | beliebig | Nutzt den Coverage-Report aus Task 3 | Bonus zu Task 40 |
+| Bonus B | Delete-Test mit `window.confirm` | Integration, Browser Mode | Stolperstein: Vitest mockt `confirm` im Browser Mode, das Verhalten muss bewusst gesteuert werden | Bonus |
+
+Entscheidungen (Gregor, 2026-11-24):
+- Beim Such-Test wird einfach `expect.element` genutzt. Kein eigener Task für Lade- und Fehlerzustände.
+- Der Delete-Test mit `window.confirm` ist nur Bonus.
+
+Befunde zum Code (aus dem `sample-solution` gelesen, nicht ausgeführt):
+- **`HttpTestingController` ist der richtige Name.** `books-client.spec.ts` nutzt ihn bereits mit `provideHttpClient()` und `provideHttpClientTesting()` (der Begriff "httpMockBackend" aus der Liste meint vermutlich diesen).
+- **Die Schema-Validierung existiert schon.** `BooksClient` ruft `v.parse(BooksCollectionSchema, ...)` in `list()` und `search()` (innerhalb von `pipe(map(...))`) und über die Option `parse` in `getAll()` (Resource). Der zweite Test aus Task 1 ist damit ohne Codeänderung möglich.
+- **Das Fehlerbild hängt vom Weg ab:** Bei `list()`/`search()` landet der Fehler im `error`-Callback des Observables, bei `getAll()` im `error()`-Signal der Resource. Für die Aufgabe einen Weg festlegen (Vorschlag: `list()`, weil das Fehlerbild einfacher ist).
+- **Der bestehende Spec nutzt `vi.waitFor`.** Beim Umrahmen kann er auf `expect.poll` umgestellt werden (Anknüpfung an Task 20).
+- **Die `list()`-Methode ist neu** (letzter Commit im Hauptrepo: "enhance BooksClient with list method"). Die Spec deckt sie noch nicht ab.
+
+Offen:
+- Task 1 ist eine Unit-Aufgabe mit gemocktem HTTP. In der Tabelle der Teststufen hieß der Http-Task bisher "Integration". Jetzt trägt Task 2 (Navigation) die Integration, `http` wird Unit. Die Zuordnung der Tasks 50 und 70 in der Task-Tabelle oben ist damit **anzupassen**, sobald Gregor die Liste freigibt.
+- Wo kommt der `RouterTestHarness` her, und läuft er im Browser Mode? Im Spike prüfen.
+- Zeit: Mit dieser Liste weiterhin ca. 160 Minuten. Kürzungskandidaten: Task 3 (Coverage-Teil) und beide Bonusaufgaben.
+
 ## Teststufen: Unit, Shallow, Integration (Tasks 50 bis 70)
 
 Die Teststufen sind **Fragestellungen**, der Browser Mode ist eine **Umgebung**, keine vierte Stufe.
