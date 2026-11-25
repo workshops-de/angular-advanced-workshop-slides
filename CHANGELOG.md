@@ -2,6 +2,18 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+# [1.7.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.6.0...v1.7.0) (2026-11-25)
+
+
+### Bug Fixes
+
+* improve comment and string highlighting in code parser ([a352f45](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/a352f451b9e4838cdd1ac1527c933f672bcb3faf))
+
+
+### Features
+
+* add micro-frontend lessons including host setup, remote component, and web component tasks ([52462fc](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/52462fc51a49e2da0b24a929deed8bdb52dc3a33))
+
 # [1.6.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.5.0...v1.6.0) (2026-11-24)
 
 
