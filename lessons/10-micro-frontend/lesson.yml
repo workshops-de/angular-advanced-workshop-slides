@@ -4,6 +4,7 @@ trainer: 'gregor@entwicklungszeit.dev'
 slides_type: google_slides
 github_code_url: https://github.com/workshops-de/angular-workshop
 git_tag_starting: solution--testing-e2e
+google_slide_id: 1Eo87sbou-VGpRy36vxl9TOFDpuvrleLOrluctuQ6WXk
 pdf_generation_enabled: true
 stackblitz_enabled: false
 codesandbox_enabled: false
