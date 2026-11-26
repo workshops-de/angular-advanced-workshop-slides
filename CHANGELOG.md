@@ -2,6 +2,14 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+# [1.8.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.7.1...v1.8.0) (2026-11-26)
+
+
+### Features
+
+* add bonus task for testing time-dependent code with Vitest fake timers ([234b742](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/234b742ec21998f3aa5e75d190050382cfd105b7))
+* enhance time machine setup for testing with Vitest fake timers ([25148d5](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/25148d5b00abe9a3af838d8f3dafbc9e079ed1c7))
+
 ## [1.7.1](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.7.0...v1.7.1) (2026-11-26)
 
 
