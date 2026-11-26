@@ -67,6 +67,8 @@ Roter Faden: Der Test aus Task 10 wird dreimal besser (TestBed pur, `expect.poll
 | 100 | Playwright einrichten | neu, **eigener Task** | 15 | E2E-Projekt per Nx-Generator einrichten (Setup existiert noch nicht) |
 | 110 | E2E-Kernpfad | neu | 20 | Ein Kernpfad mit Playwright (zum Beispiel Buch suchen, Detailseite öffnen) |
 
+| 120 | Bonus: Time machine | neu, **Bonus**, eigener Task | 10 | Zeitabhängigen Code mit Fake Timers testen: `App` begrüßt nach 6 s per `setTimeout`. `vi.useFakeTimers`, `advanceTimersByTimeAsync`, `expect.element` |
+
 Summe ca. **160 Minuten** (Schätzung für 100 und 110). Kürzungskandidaten in dieser Reihenfolge: Bonus A und B, Task 30, Task 110.
 
 Die Ordnernamen der bestehenden Tasks ändern sich mit der Nummerierung. Die Solutions im `sample-solution` müssen neu geordnet werden (Rebase, `solution-creator`). Die Nummer 60 bleibt frei.
@@ -97,6 +99,47 @@ Die Ordnernamen der bestehenden Tasks ändern sich mit der Nummerierung. Die Sol
 - `RouterTestingHarness` (Name laut Angular-Doku, Import aus `@angular/router/testing`), echte Routen mit `provideRouter`, den Router nicht mocken. Details in Recherche Abschnitt 7.
 - **Nicht belegt:** Klick auf `routerLink`, Zusammenspiel von `routeNativeElement` mit Locators. Beim Schreiben des Tests klären.
 - Bonus B: `window.confirm` wird von Vitest im Browser Mode gemockt, das Verhalten muss bewusst gesteuert werden (zum Beispiel `vi.spyOn`).
+
+### Task 120 (Bonus): Time machine
+
+- Eigener Bonus-Task, im Lesson-Ordner `100-time-machine` (die Nummern im Plan und im Ordner weichen ab, siehe Hinweis zur Nummerierung oben).
+- Ziel: Zeitabhängigen Code testen, ohne zu warten. Getestet wird `App` (`apps/bookmonkey-client/src/app/app.ts`): Im Konstruktor ändert ein `setTimeout` nach 6000 ms `warmWelcome` von _Angularian_ zu _Hello Angularian_.
+- Die Fake-Uhr muss **vor** `render` installiert sein, weil der Timer im Konstruktor startet. `provideRouter([])` ist nötig (Router-Outlet).
+- Die Referenz-`app.spec.ts` auf `main` enthält den Timer-Test bewusst **nicht**, sonst wäre der Bonus vorab gelöst.
+- Snippet (Musterlösung), Datei `app-greeting.spec.ts`:
+
+```ts
+import { provideRouter } from '@angular/router';
+import { render } from 'vitest-browser-angular';
+
+import { App } from './app';
+
+describe('App greeting', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('greets the attendee after 6 seconds', async () => {
+    const screen = await render(App, { providers: [provideRouter([])] });
+    const heading = screen.getByRole('heading', { level: 1 });
+
+    await expect.element(heading).not.toHaveTextContent('Hello');
+
+    await vi.advanceTimersByTimeAsync(5999);
+    await expect.element(heading).not.toHaveTextContent('Hello');
+
+    await vi.advanceTimersByTimeAsync(1);
+    await expect.element(heading).toHaveTextContent('Hello Angularian');
+  });
+});
+```
+
+- Anknüpfung: `whenStable()` erfasst Fake-Timer nicht (Recherche Abschnitt 1), `expect.poll` ruft mit Fake Timers `advanceTimersByTime` auf.
+- **Nicht ausgeführt.** Beim Anlegen der Solution `solution--testing-time-machine` prüfen, ob `expect.element` unter Fake Timers nicht hängt (es pollt selbst mit Timern).
 
 ### Task 90: Architekturtests
 
