@@ -6,9 +6,9 @@ Some code depends on **time**: the `App{:ts}` (`apps/bookmonkey-client/src/app/a
 
 ---
 
-- **Install the time machine** Fake the clock before each test and restore it afterwards:
-  - `vi.useFakeTimers(){:ts}` in a `beforeEach(){:ts}`.
-  - `vi.useRealTimers(){:ts}` in an `afterEach(){:ts}`.
+- **Install the time machine** Write a helper `setUpTimeMachine(){:ts}` and call it at the start of each test:
+  - It fakes the clock with `vi.useFakeTimers(){:ts}`.
+  - It restores the real clock when the test is over: `onTestFinished(() => vi.useRealTimers()){:ts}` (import from `vitest`). Otherwise the fake clock leaks into other tests.
 
 ---
 
@@ -21,5 +21,12 @@ Some code depends on **time**: the `App{:ts}` (`apps/bookmonkey-client/src/app/a
   - Jump to just before the deadline with `await vi.advanceTimersByTimeAsync(5999){:ts}`. The heading must not change yet.
   - Travel the last millisecond with `await vi.advanceTimersByTimeAsync(1){:ts}`.
   - Assert with `expect.element(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Hello Angularian'){:ts}`.
+
+---
+
+- **Skip the waiting** Guessing `6000{:ts}` is brittle: if the delay changes, the test breaks. Let the clock jump to the next timer by itself. Add `it('greets the attendee without guessing the time', ...){:ts}`:
+  - Write a second helper `setUpFastForward(){:ts}`: fake the clock, call `vi.setTimerTickMode('nextTimerAsync'){:ts}` and restore the real clock with `onTestFinished(){:ts}` again. Call it **before** rendering.
+  - Render the app and assert with `expect.element(...).toHaveTextContent('Hello Angularian'){:ts}`. No `advanceTimersByTimeAsync(){:ts}` needed.
+  - This also keeps tests with long animations or delays stable and fast.
 
 Run `npx nx test bookmonkey-client{:bash}`.

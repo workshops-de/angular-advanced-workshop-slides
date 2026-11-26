@@ -106,24 +106,21 @@ Die Ordnernamen der bestehenden Tasks ändern sich mit der Nummerierung. Die Sol
 - Ziel: Zeitabhängigen Code testen, ohne zu warten. Getestet wird `App` (`apps/bookmonkey-client/src/app/app.ts`): Im Konstruktor ändert ein `setTimeout` nach 6000 ms `warmWelcome` von _Angularian_ zu _Hello Angularian_.
 - Die Fake-Uhr muss **vor** `render` installiert sein, weil der Timer im Konstruktor startet. `provideRouter([])` ist nötig (Router-Outlet).
 - Die Referenz-`app.spec.ts` auf `main` enthält den Timer-Test bewusst **nicht**, sonst wäre der Bonus vorab gelöst.
-- Snippet (Musterlösung), Datei `app-greeting.spec.ts`:
+- **Zeit zurücksetzen (Gregor, 2026-11-26):** Die echte Uhr wird am Ende jedes Tests mit `onTestFinished(() => vi.useRealTimers())` wiederhergestellt, in kleinen Helfern `setUpTimeMachine()` und `setUpFastForward()` (Muster aus dem Marmicode Cookbook). `onTestFinished` läuft auch bei Fehlern, die Fake-Uhr leckt nicht in andere Tests.
+- **Zusatztest:** `vi.setTimerTickMode('nextTimerAsync')`. Die Uhr springt von selbst zum nächsten Timer, die Dauer muss nicht geraten werden. Tests werden stabiler, auch bei Animationen, die Zeit fressen. Quelle: [Marmicode Cookbook, Controlling time in tests](https://cookbook.marmicode.io/angular/testing/controlling-time-in-tests). Vitest 5.1.1 im `sample-solution` kennt die Funktion.
+- Snippet (Musterlösung `solution--testing-time-machine`, beide Tests laufen grün), Datei `app-greeting.spec.ts`:
 
 ```ts
 import { provideRouter } from '@angular/router';
+import { onTestFinished } from 'vitest';
 import { render } from 'vitest-browser-angular';
 
 import { App } from './app';
 
 describe('App greeting', () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
   it('greets the attendee after 6 seconds', async () => {
+    setUpTimeMachine();
+
     const screen = await render(App, { providers: [provideRouter([])] });
     const heading = screen.getByRole('heading', { level: 1 });
 
@@ -135,11 +132,33 @@ describe('App greeting', () => {
     await vi.advanceTimersByTimeAsync(1);
     await expect.element(heading).toHaveTextContent('Hello Angularian');
   });
+
+  it('greets the attendee without guessing the time', async () => {
+    setUpFastForward();
+
+    const screen = await render(App, { providers: [provideRouter([])] });
+
+    await expect.element(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Hello Angularian');
+  });
 });
+
+function setUpTimeMachine() {
+  vi.useFakeTimers();
+  onTestFinished(() => {
+    vi.useRealTimers();
+  });
+}
+
+function setUpFastForward() {
+  vi.useFakeTimers().setTimerTickMode('nextTimerAsync');
+  onTestFinished(() => {
+    vi.useRealTimers();
+  });
+}
 ```
 
 - Anknüpfung: `whenStable()` erfasst Fake-Timer nicht (Recherche Abschnitt 1), `expect.poll` ruft mit Fake Timers `advanceTimersByTime` auf.
-- **Nicht ausgeführt.** Beim Anlegen der Solution `solution--testing-time-machine` prüfen, ob `expect.element` unter Fake Timers nicht hängt (es pollt selbst mit Timern).
+- Beide Tests laufen im `sample-solution` grün (`solution--testing-time-machine`), `expect.element` hängt unter Fake Timers nicht.
 
 ### Task 90: Architekturtests
 
