@@ -41,16 +41,16 @@ import { Events, on, withEventHandlers, withReducer } from '@ngrx/signals/events
 export const BookSearchStore = signalStore(
   withState(initialState),
   withReducer(
-    on(bookSearchEvents.searchQueryUpdated, () => ({ isLoading: true })),
-    on(bookSearchEvents.searchSucceeded, ({ payload: books }) => ({ books, isLoading: false })),
-    on(bookSearchEvents.searchFailed, () => ({ isLoading: false }))
+    on(bookSearchEvents.searchQueryUpdated, () => ({ /* loading true */  })),
+    on(bookSearchEvents.searchSucceeded, ({ payload: books }) => ({ /* books & loading false */ })),
+    on(bookSearchEvents.searchFailed, () => ({ /* loading false */ }))
   ),
   withEventHandlers((_store, events = inject(Events), booksClient = inject(BooksClient)) => ({
     search$: events.on(bookSearchEvents.searchQueryUpdated).pipe(
       switchMap(({ payload }) =>
         booksClient.search(payload.query).pipe(
           mapResponse({
-            next: books => bookSearchEvents.searchSucceeded(books),
+            next: books => /* return searchSucceeded event with books  */,
             error: (error: Error) => {
               console.error(error);
               return bookSearchEvents.searchFailed(error.message);
@@ -80,5 +80,9 @@ export class BookSearchPage {
 ```
 
 ```html
-<input class="search-field" type="search" (input)="search($event.target.value)" />
+<input
+  class="search-field"
+  type="search"
+  (input)="search($event.target.value)"
+/>
 ```
