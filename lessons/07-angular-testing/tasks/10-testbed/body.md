@@ -1,6 +1,6 @@
 Angular ships with **Vitest** as test runner. Every building block can be tested in isolation. Let's test the `BookCard{:ts}` component (`libs/feature-books/src/lib/book-card/book-card.ts`) the "vanilla" way, directly through `TestBed{:ts}`.
 
-The existing `book-card.spec.ts` uses another library. Leave it as it is and write your test into a new file. The next tasks will improve this test step by step, so keep it plain for now.
+Write your test into a new file. The next tasks will improve this test step by step, so keep it plain for now.
 
 ---
 

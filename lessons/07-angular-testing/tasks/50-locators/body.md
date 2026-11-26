@@ -2,7 +2,7 @@ So far you tested a single component. Now you test a whole page the way a user u
 
 `vitest-browser-angular` is already installed. Its `render(){:ts}` function replaces the manual `TestBed.createComponent(){:ts}` and the `whenStable(){:ts}` call.
 
-Do not touch the existing `books-page.spec.ts`. Write a new spec file.
+In this task you get to know the Vitest browser API. It runs in a real browser and is closely modeled on Playwright: you select elements with locators like `page.getByRole(){:ts}` or `page.getByTestId(){:ts}` and assert with `expect.element(){:ts}`, which retries until the assertion passes. The `App` test in `apps/bookmonkey-client/src/app/app.spec.ts` is a small reference for this style.
 
 ---
 
