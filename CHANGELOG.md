@@ -2,6 +2,15 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+## [1.7.1](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.7.0...v1.7.1) (2026-11-26)
+
+
+### Bug Fixes
+
+* update event handlers and comments in BookSearchStore for clarity ([934ab84](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/934ab84d230d79bec07a90eed3f66bef0d0a5941))
+* update google_slide_id in micro frontend lesson configuration ([8dc9827](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/8dc98274f35107334961e1951e1ef589e9866bb6))
+* update instructions for creating test files in Angular testing tasks ([f5b531a](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/f5b531a5c9cbc0e495e3bbf9044d82f8d2d7af3e))
+
 # [1.7.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.6.0...v1.7.0) (2026-11-25)
 
 
