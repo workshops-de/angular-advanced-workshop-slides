@@ -9,7 +9,7 @@ Currently, no slidev slides are planned in this repository.
 Slides live at Google Slides.
 Topics are spread among different presentations.
 
-Use `./.claude/skills/google-slides-workshop-teacher` to learn how slides are updated.
+Use `./.claude/skills/slide-creator` to learn how slides are updated.
 
 # Commit Conventions
 
@@ -26,7 +26,6 @@ The `sample-solution` directory (a git submodule pointing to `git@github.com:wor
 ## Slidev
 
 The `slidev-slides` Contain the first version of the advanced Angular workshop. They have contents about structuring the code, state management with Signal Store, as well as runtime configuration. These slides are here as a source for creating the Google Slides.
-
 
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
@@ -49,6 +48,5 @@ The `slidev-slides` Contain the first version of the advanced Angular workshop. 
 - USE for: advanced config options, unfamiliar flags, migration guides, plugin configuration, edge cases
 - DON'T USE for: basic generator syntax (`nx g @nx/react:app`), standard commands, things you already know
 - The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
-
 
 <!-- nx configuration end-->
