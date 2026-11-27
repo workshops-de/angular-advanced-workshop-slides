@@ -2,6 +2,13 @@
 
 Alle nennenswerten Änderungen an den Workshop-Lessons. Automatisch aus den Conventional Commits erzeugt (semantic-release).
 
+## [1.8.1](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.8.0...v1.8.1) (2026-11-27)
+
+
+### Bug Fixes
+
+* update slide update instructions in CLAUDE.md ([70690bf](https://github.com/workshops-de/angular-advanced-workshop-slides/commit/70690bfbfe9d5d76631b5cfa685d297d25b46a88))
+
 # [1.8.0](https://github.com/workshops-de/angular-advanced-workshop-slides/compare/v1.7.1...v1.8.0) (2026-11-26)
 
 
